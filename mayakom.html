@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Дом с маяком — Илья Лопухов</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'TT Norms';
+      src: url('fonts/TTNorms-Light.otf') format('opentype');
+      font-weight: 300; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'TT Norms';
+      src: url('fonts/TTNorms-Regular.otf') format('opentype');
+      font-weight: 400; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'TT Norms';
+      src: url('fonts/TTNorms-Medium.otf') format('opentype');
+      font-weight: 500; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'TT Norms';
+      src: url('fonts/TTNorms-Bold.otf') format('opentype');
+      font-weight: 700; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'TT Norms';
+      src: url('fonts/TTNorms-ExtraBold.otf') format('opentype');
+      font-weight: 800; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'TT Norms';
+      src: url('fonts/TTNorms-Black.otf') format('opentype');
+      font-weight: 900; font-style: normal; font-display: swap;
+    }
+
+    @font-face { font-family: 'Zalando Sans'; src: url('fonts/ZalandoSans-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Zalando Sans'; src: url('fonts/ZalandoSans-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Zalando Sans'; src: url('fonts/ZalandoSans-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Zalando Sans'; src: url('fonts/ZalandoSans-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Zalando Sans'; src: url('fonts/ZalandoSans-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Zalando Sans'; src: url('fonts/ZalandoSans-ExtraBold.ttf') format('truetype'); font-weight: 800; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Zalando Sans'; src: url('fonts/ZalandoSans-Black.ttf') format('truetype'); font-weight: 900; font-style: normal; font-display: swap; }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --accent: #5B3A8C;
+      --accent-bright: #7B52B5;
+      --bg-deep: #0a0a0a;
+      --white: #ffffff;
+      --gray: #939393;
+      --font-primary: 'TT Norms', 'Inter', 'Helvetica Neue', Arial, sans-serif;
+      --font-en: 'Zalando Sans', 'Inter', 'Helvetica Neue', Arial, sans-serif;
+      --font-serif: 'Source Serif 4', 'Georgia', serif;
+      --ease-reveal: cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    html { font-size: 16px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+    body {
+      font-family: var(--font-primary);
+      color: #1a1a1a;
+      background: #ffffff;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    html[lang="en"] body { font-family: var(--font-en); }
+
+    a { text-decoration: none; color: inherit; cursor: none; }
+    button { cursor: none; border: none; background: none; font-family: inherit; }
+    img { max-width: 100%; display: block; }
+
+    /* Cursor */
+    .cursor {
+      position: fixed; width: 20px; height: 20px; border-radius: 50%;
+      border: 1.5px solid #1a1a1a; pointer-events: none; z-index: 99999;
+      transform: translate(-50%, -50%);
+      transition: width 0.3s var(--ease-reveal), height 0.3s var(--ease-reveal), background 0.3s ease;
+      mix-blend-mode: difference; background: transparent;
+    }
+    .cursor.active { width: 50px; height: 50px; background: rgba(255,255,255,0.1); }
+
+    /* Noise */
+    .noise-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 99998; opacity: 0.06;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-repeat: repeat; background-size: 256px 256px;
+    }
+
+    /* ========== SCROLL ANIMATIONS ========== */
+    .reveal {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity 0.85s var(--ease-reveal), transform 0.85s var(--ease-reveal);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .reveal-blur {
+      opacity: 0; filter: blur(10px); transform: translateY(30px);
+      transition: opacity 1.2s var(--ease-reveal), filter 1.2s var(--ease-reveal), transform 1.2s var(--ease-reveal);
+    }
+    .reveal-blur.visible { opacity: 1; filter: blur(0); transform: translateY(0); }
+
+    .reveal-scale {
+      opacity: 0; transform: scale(0.92);
+      transition: opacity 1.2s var(--ease-reveal), transform 1.4s var(--ease-reveal);
+    }
+    .reveal-scale.visible { opacity: 1; transform: scale(1); }
+
+    .reveal-left {
+      opacity: 0; transform: translateX(-80px);
+      transition: opacity 1.2s var(--ease-reveal), transform 1.2s var(--ease-reveal);
+    }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+
+    .reveal-right {
+      opacity: 0; transform: translateX(80px);
+      transition: opacity 1.2s var(--ease-reveal), transform 1.2s var(--ease-reveal);
+    }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+    /* Stagger */
+    .stagger > * {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity 0.85s var(--ease-reveal), transform 0.85s var(--ease-reveal);
+    }
+    .stagger.visible > *:nth-child(1) { transition-delay: 0s; }
+    .stagger.visible > *:nth-child(2) { transition-delay: 0.12s; }
+    .stagger.visible > *:nth-child(3) { transition-delay: 0.24s; }
+    .stagger.visible > *:nth-child(4) { transition-delay: 0.36s; }
+    .stagger.visible > * { opacity: 1; transform: translateY(0); }
+
+    /* ========== HEADER ========== */
+    .header {
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+      padding: 24px 60px; display: flex; justify-content: space-between; align-items: center;
+      transition: background 0.4s ease, padding 0.3s ease;
+    }
+    .header.scrolled { padding: 16px 60px; background: rgba(255,255,255,0.9); backdrop-filter: blur(13px); -webkit-backdrop-filter: blur(13px); }
+
+    .header-back {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 13px; font-weight: 500; color: #1a1a1a;
+      letter-spacing: 0.3px; transition: opacity 0.3s ease;
+    }
+    .header-back:hover { opacity: 0.7; }
+    .header-back svg { width: 18px; height: 18px; }
+
+    /* ========== CASE HERO ========== */
+    .case-hero {
+      padding: 160px 60px 60px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .case-title {
+      font-size: clamp(48px, 7vw, 120px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+      color: #1a1a1a;
+      line-height: 1;
+      margin-bottom: 60px;
+      white-space: nowrap;
+    }
+
+    .case-meta-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0;
+      padding-top: 24px;
+      border-top: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .case-meta-item {
+      display: flex; flex-direction: column; gap: 6px;
+      padding-right: 60px;
+    }
+    .case-meta-label {
+      font-size: 14px;
+      color: #999;
+      font-weight: 400;
+    }
+    .case-meta-value {
+      font-size: 16px;
+      font-weight: 400;
+      color: #1a1a1a;
+      letter-spacing: -0.01em;
+    }
+
+    .case-meta-tags {
+      margin-left: auto;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding-top: 4px;
+    }
+    .case-meta-tag {
+      font-size: 13px;
+      color: #1a1a1a;
+      padding: 6px 16px;
+      border: 1px solid rgba(0,0,0,0.2);
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+
+    /* ========== CONTENT ========== */
+    .case-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 60px;
+    }
+
+    .case-section { margin-bottom: 100px; }
+
+    .case-section-label {
+      font-size: 11px; text-transform: uppercase; letter-spacing: 2px;
+      color: #999; margin-bottom: 20px; font-weight: 500;
+    }
+
+    .case-section-heading {
+      font-size: clamp(28px, 3.5vw, 52px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #1a1a1a;
+      margin-bottom: 30px;
+      line-height: 1.1;
+    }
+
+    .case-text {
+      font-size: 17px;
+      line-height: 1.75;
+      color: #666;
+      max-width: 680px;
+      margin-bottom: 24px;
+      font-weight: 300;
+    }
+    .case-text strong { color: #1a1a1a; font-weight: 500; }
+
+    /* ========== FULL IMAGE ========== */
+    .case-full-image {
+      width: 100%;
+      margin: 60px 0;
+      padding: 0 60px;
+    }
+    .case-full-image img {
+      width: 100%; display: block;
+      border-radius: 12px;
+    }
+
+    /* ========== PARALLAX IMAGE ========== */
+    .parallax-wrap {
+      overflow: hidden;
+      position: relative;
+      margin: 60px 0;
+    }
+    .parallax-wrap img {
+      width: 100%;
+      height: 120%;
+      object-fit: cover;
+      display: block;
+      will-change: transform;
+    }
+
+    /* ========== IMAGE GRID ========== */
+    .image-grid {
+      display: grid;
+      gap: 20px;
+      padding: 40px 60px;
+    }
+    .image-grid--2 { grid-template-columns: 1fr 1fr; }
+    .image-grid--4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+    .image-grid img {
+      width: 100%; height: auto;
+      object-fit: contain;
+      border-radius: 12px;
+      display: block;
+    }
+
+    /* ========== VIDEO ========== */
+    .video-section {
+      padding: 0 60px;
+      margin: 60px auto;
+      max-width: 1400px;
+    }
+    .video-wrapper {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #000;
+    }
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* ========== STICKY SECTION ========== */
+    .sticky-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      padding: 120px 60px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .sticky-section__text {
+      position: sticky;
+      top: 120px;
+      align-self: start;
+    }
+    .sticky-section__images {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+    .sticky-section__images img {
+      width: 100%; height: auto;
+      border-radius: 12px;
+    }
+
+    /* ========== QUOTE ========== */
+    .case-quote {
+      padding: 100px 60px;
+      max-width: 1000px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .case-quote p {
+      font-size: clamp(22px, 2.5vw, 34px);
+      font-weight: 400;
+      line-height: 1.4;
+      font-family: var(--font-serif);
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    /* ========== DIVIDER ========== */
+    .divider {
+      height: 1px;
+      background: rgba(0,0,0,0.08);
+      margin: 0 60px;
+    }
+
+    /* ========== RESULTS GRID ========== */
+    .case-results-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0;
+      margin-top: 40px;
+    }
+    .case-results-item {
+      padding: 40px 0;
+      border-top: 1px solid rgba(0,0,0,0.08);
+    }
+    .case-results-number {
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+    }
+    .case-results-label {
+      font-size: 14px;
+      color: #999;
+      font-weight: 400;
+    }
+
+    /* ========== AWARDS ========== */
+    .awards-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 30px;
+    }
+    .awards-list span {
+      font-size: 13px;
+      color: #1a1a1a;
+      padding: 8px 18px;
+      border: 1px solid rgba(0,0,0,0.12);
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+
+    /* ========== RESULT ========== */
+    .result {
+      padding: 140px 0;
+      text-align: center;
+    }
+    .result__heading {
+      font-size: clamp(36px, 5vw, 72px);
+      font-weight: 200;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 40px;
+      color: #1a1a1a;
+    }
+    .result__body {
+      font-size: 18px;
+      line-height: 1.7;
+      color: #666;
+      max-width: 700px;
+      margin: 0 auto;
+      font-weight: 300;
+    }
+
+    /* ========== NEXT PROJECT ========== */
+    .case-next {
+      padding: 80px 60px;
+      border-top: 1px solid rgba(0,0,0,0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .case-next-label { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: #999; margin-bottom: 10px; }
+    .case-next-title {
+      font-size: clamp(28px, 4vw, 56px);
+      font-weight: 700;
+      color: #1a1a1a;
+      letter-spacing: -0.02em;
+      transition: color 0.3s ease;
+    }
+    .case-next a:hover .case-next-title { color: var(--accent); }
+
+    /* Spacers */
+    .spacer { height: 80px; }
+    .spacer--lg { height: 140px; }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 999px) {
+      .header { padding: 20px 25px; }
+      .header.scrolled { padding: 14px 25px; }
+      .case-hero { padding: 120px 25px 60px; }
+      .case-content { padding: 0 25px; }
+      .case-full-image { padding: 0 25px; }
+      .image-grid { padding: 20px 25px; }
+      .video-section { padding: 0 25px; }
+      .sticky-section { grid-template-columns: 1fr; gap: 60px; padding: 80px 25px; }
+      .sticky-section__text { position: static; }
+      .case-meta-row { flex-wrap: wrap; gap: 20px; }
+      .case-meta-item { padding-right: 30px; }
+      .case-meta-tags { margin-left: 0; }
+      .case-next { padding: 60px 25px; }
+      .divider { margin: 0 25px; }
+      .case-quote { padding: 60px 25px; }
+      .case-results-grid { grid-template-columns: 1fr; }
+      .image-grid--4 { grid-template-columns: 1fr 1fr; }
+      .reveal-left, .reveal-right { transform: translateY(40px) !important; }
+      .reveal-left.visible, .reveal-right.visible { transform: translateY(0) !important; }
+    }
+
+    @media (max-width: 690px) {
+      .image-grid--2 { grid-template-columns: 1fr; }
+      .image-grid--4 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+
+  <!-- HEADER -->
+  <header class="header" id="header">
+    <a href="index.html" class="header-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      <span data-ru="Назад" data-en="Back">Назад</span>
+    </a>
+    <a href="index.html" style="color: #1a1a1a; font-size: 15px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; mix-blend-mode: difference;">IL</a>
+  </header>
+
+  <main>
+
+    <!-- ========== CASE HERO ========== -->
+    <section class="case-hero">
+      <h1 class="case-title reveal-blur" data-ru="ДОМ С МАЯКОМ" data-en="LIGHTHOUSE">ДОМ С МАЯКОМ</h1>
+
+      <div class="case-meta-row reveal">
+        <div class="case-meta-item">
+          <span class="case-meta-label">Year</span>
+          <span class="case-meta-value">2024</span>
+        </div>
+        <div class="case-meta-item">
+          <span class="case-meta-label">Client</span>
+          <span class="case-meta-value" data-ru="Дом с маяком" data-en="Lighthouse Hospice">Дом с маяком</span>
+        </div>
+        <div class="case-meta-item">
+          <span class="case-meta-label">Role</span>
+          <span class="case-meta-value">Executive Creative Director</span>
+        </div>
+        <div class="case-meta-tags">
+          <span class="case-meta-tag" data-ru="Спецпроект" data-en="Special project">Спецпроект</span>
+          <span class="case-meta-tag" data-ru="Социальная реклама" data-en="Social advertising">Социальная реклама</span>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ========== ЗАДАЧА ========== -->
+    <div class="case-content">
+      <section class="case-section reveal">
+        <p class="case-section-label" data-ru="Задача" data-en="Challenge">Задача</p>
+        <h2 class="case-section-heading" data-ru="Вызвать настоящий эмоциональный отклик — без манипуляций." data-en="Evoke a genuine emotional response — without manipulation.">Вызвать настоящий эмоциональный отклик — без манипуляций.</h2>
+        <div class="case-text">
+          <p data-ru-html="«Дом с маяком» — детский хоспис, который помогает детям и молодым взрослым с неизлечимыми заболеваниями. 85% бюджета хосписа — пожертвования обычных людей. Для стабильной работы фонду необходимо выстраивать коммуникацию с частными лицами: повышать осведомлённость и привлекать пожертвования." data-en-html="Lighthouse Hospice helps children and young adults with terminal illnesses. 85% of the hospice budget comes from private donations. For stable operation, the foundation needs to build communication with individuals: raise awareness and attract donations.">«Дом с маяком» — детский хоспис, который помогает детям и молодым взрослым с неизлечимыми заболеваниями. 85% бюджета хосписа — пожертвования обычных людей. Для стабильной работы фонду необходимо выстраивать коммуникацию с частными лицами: повышать осведомлённость и привлекать пожертвования.</p>
+        </div>
+        <div class="case-text">
+          <p data-ru-html="Сфера благотворительности столкнулась с двумя барьерами. <strong>Барьер доверия:</strong> 32% людей доверяют только государственным организациям, 15% не доверяют никаким НКО. <strong>Барьер понимания:</strong> большинству людей тяжело представить себе жизнь неизлечимо больного — многие никогда не сталкивались с такими заболеваниями." data-en-html="The charity sector faces two barriers. <strong>Trust barrier:</strong> 32% of people only trust government organizations, 15% don't trust any NGOs. <strong>Understanding barrier:</strong> most people can't imagine the life of a terminally ill person — many have never encountered such diseases.">Сфера благотворительности столкнулась с двумя барьерами. <strong>Барьер доверия:</strong> 32% людей доверяют только государственным организациям, 15% не доверяют никаким НКО. <strong>Барьер понимания:</strong> большинству людей тяжело представить себе жизнь неизлечимо больного — многие никогда не сталкивались с такими заболеваниями.</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- ========== VIDEO — Дом с маяком (Vimeo) ========== -->
+    <div class="video-section reveal-scale">
+      <div class="video-wrapper">
+        <iframe src="https://player.vimeo.com/video/1177628053?byline=0&title=0&dnt=1"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowfullscreen
+                loading="lazy">
+        </iframe>
+      </div>
+    </div>
+
+    <div class="spacer--lg"></div>
+
+    <!-- ========== ИДЕЯ ========== -->
+    <div class="case-content">
+      <section class="case-section reveal">
+        <p class="case-section-label" data-ru="Идея" data-en="Idea">Идея</p>
+        <h2 class="case-section-heading" data-ru="Планета, непригодная для жизни." data-en="A planet unfit for life.">Планета, непригодная для жизни.</h2>
+        <div class="case-text">
+          <p data-ru-html="Неизлечимые болезни ограничивают обычные для здорового человека процессы: дышать, ходить, есть обычную пищу, находиться на солнце. С чем можно сравнить такую жизнь? <strong>С существованием на планете, непригодной для жизни.</strong>" data-en-html="Terminal illnesses limit ordinary processes for a healthy person: breathing, walking, eating regular food, being in the sun. What can such a life be compared to? <strong>Existing on a planet unfit for life.</strong>">Неизлечимые болезни ограничивают обычные для здорового человека процессы: дышать, ходить, есть обычную пищу, находиться на солнце. С чем можно сравнить такую жизнь? <strong>С существованием на планете, непригодной для жизни.</strong></p>
+        </div>
+        <div class="case-text">
+          <p data-ru="«Планета, непригодная для жизни» — не абстрактная метафора. Это конкретный взгляд на мир через опыт каждого пациента «Дома с маяком»." data-en="'A Planet Unfit for Life' is not an abstract metaphor. It's a specific lens on the world through the experience of each Lighthouse patient.">«Планета, непригодная для жизни» — не абстрактная метафора. Это конкретный взгляд на мир через опыт каждого пациента «Дома с маяком».</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- Пациенты — 4 карточки -->
+    <div class="image-grid image-grid--4">
+      <div class="reveal" style="transition-delay: 0s">
+        <img src="cases/mayakom/пациент 1_.png" alt="Амир, 15 лет — «Солнечное излучение моей родной планеты мне не подходит»" loading="lazy">
+      </div>
+      <div class="reveal" style="transition-delay: 0.12s">
+        <img src="cases/mayakom/пациент 2_.png" alt="Варя, 4 года — «Пища нашей планеты мне не подходит»" loading="lazy">
+      </div>
+      <div class="reveal" style="transition-delay: 0.24s">
+        <img src="cases/mayakom/пациент 3.png" alt="Дима, 4 года — «Гравитация Земли мне не подходит»" loading="lazy">
+      </div>
+      <div class="reveal" style="transition-delay: 0.36s">
+        <img src="cases/mayakom/пациент 4.png" alt="Зоя, 10 лет — «На нашей планете невозможно дышать»" loading="lazy">
+      </div>
+    </div>
+
+    <div class="spacer--lg"></div>
+    <div class="divider"></div>
+
+    <!-- ========== РЕШЕНИЕ ========== -->
+    <div class="sticky-section">
+      <div class="sticky-section__text reveal">
+        <p class="case-section-label" data-ru="Решение" data-en="Solution">Решение</p>
+        <h2 class="case-section-heading" style="max-width:500px" data-ru="Анимация. Интерактивный сайт. Экосистемный проект." data-en="Animation. Interactive website. Ecosystem project.">Анимация. Интерактивный сайт. Экосистемный проект.</h2>
+        <div class="case-text" style="max-width:480px">
+          <p data-ru-html="<strong>Анимационный ролик.</strong> Анимационная студия Zebra Hero и Invisible Friends создали мультипликационный ролик, озвученный актёром Александром Петровым. Ролик показал, что жизнь на нашей собственной планете по-своему непригодна для каждого пациента." data-en-html="<strong>Animated film.</strong> Animation studio Zebra Hero and Invisible Friends created an animated film voiced by actor Alexander Petrov. The film showed that life on our own planet is inhospitable in its own way for each patient."><strong>Анимационный ролик.</strong> Анимационная студия Zebra Hero и Invisible Friends создали мультипликационный ролик, озвученный актёром Александром Петровым. Ролик показал, что жизнь на нашей собственной планете по-своему непригодна для каждого пациента.</p>
+        </div>
+        <div class="case-text" style="max-width:480px">
+          <p data-ru-html="<strong>Интерактивный сайт.</strong> При наведении курсора на персонажей открывался рассказ, основанный на истории реального ребёнка. Каждый донат зажигал именную звезду благотворителя на карте." data-en-html="<strong>Interactive website.</strong> Hovering over characters revealed a story based on a real child's history. Each donation lit a donor's star on the map."><strong>Интерактивный сайт.</strong> При наведении курсора на персонажей открывался рассказ, основанный на истории реального ребёнка. Каждый донат зажигал именную звезду благотворителя на карте.</p>
+        </div>
+      </div>
+      <div class="sticky-section__images">
+        <div class="reveal" style="transition-delay: 0.1s">
+          <img src="cases/mayakom/сайт 1.png" alt="Интерактивный сайт — главная страница" loading="lazy">
+        </div>
+        <div class="reveal" style="transition-delay: 0.25s">
+          <img src="cases/mayakom/сайт 2.png" alt="Интерактивный сайт — карта звёзд" loading="lazy">
+        </div>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <!-- Background / assets image -->
+    <div class="parallax-wrap reveal-scale" data-parallax>
+      <img src="cases/mayakom/фон 1_.png" alt="Планета, непригодная для жизни — визуальный мир" loading="lazy">
+    </div>
+
+    <div class="spacer--lg"></div>
+    <div class="divider"></div>
+
+    <!-- ========== ЭКОСИСТЕМА ========== -->
+    <div class="case-content">
+      <section class="case-section reveal" style="padding-top: 100px;">
+        <p class="case-section-label" data-ru="Экосистема" data-en="Ecosystem">Экосистема</p>
+        <h2 class="case-section-heading" data-ru="От VK до фасадов зданий в Москве." data-en="From VK to building facades in Moscow.">От VK до фасадов зданий в Москве.</h2>
+        <div class="case-text">
+          <p data-ru="Для максимального охвата запустили комплексную кампанию: рекламная кампания в VK и «Одноклассниках», привлечение инфлюенсеров (Александр Петров, Ян Топлес, Яна Чурикова), публикации в охватных Telegram-каналах, пресс-релизы в СМИ, наружная реклама на улицах Москвы." data-en="For maximum reach, we launched a comprehensive campaign: advertising on VK and Odnoklassniki, influencer engagement (Alexander Petrov, Yan Toples, Yana Churikova), publications in high-reach Telegram channels, press releases, outdoor advertising on Moscow streets.">Для максимального охвата запустили комплексную кампанию: рекламная кампания в VK и «Одноклассниках», привлечение инфлюенсеров (Александр Петров, Ян Топлес, Яна Чурикова), публикации в охватных Telegram-каналах, пресс-релизы в СМИ, наружная реклама на улицах Москвы.</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- Media coverage grid -->
+    <div class="image-grid image-grid--2">
+      <div class="reveal-left">
+        <img src="cases/mayakom/телеграм_.png" alt="Публикации в Telegram-каналах" loading="lazy">
+      </div>
+      <div class="reveal-right">
+        <img src="cases/mayakom/сми.png" alt="Публикации в СМИ — TimeOut и другие" loading="lazy">
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div class="image-grid image-grid--2">
+      <div class="reveal-left">
+        <img src="cases/mayakom/топлес.png" alt="Ян Топлес — инфлюенсер-поддержка" loading="lazy">
+      </div>
+      <div class="reveal-right">
+        <img src="cases/mayakom/assets.png" alt="Визуальные ассеты кампании" loading="lazy">
+      </div>
+    </div>
+
+    <div class="spacer--lg"></div>
+    <div class="divider"></div>
+
+    <!-- ========== РЕЗУЛЬТАТ ========== -->
+    <div class="case-content">
+      <section class="case-section reveal" style="padding-top: 100px;">
+        <p class="case-section-label" data-ru="Результат" data-en="Result">Результат</p>
+        <h2 class="case-section-heading" data-ru="4.5 млн охват. 15+ наград на 9 фестивалях." data-en="4.5M reach. 15+ awards at 9 festivals.">4.5 млн охват. 15+ наград на 9 фестивалях.</h2>
+
+        <div class="case-results-grid stagger">
+          <div class="case-results-item">
+            <div class="case-results-number" data-ru="4.5 млн" data-en="4.5M">4.5 млн</div>
+            <div class="case-results-label" data-ru="Охват проекта" data-en="Project reach">Охват проекта</div>
+          </div>
+          <div class="case-results-item">
+            <div class="case-results-number" data-ru="25 тыс" data-en="25K">25 тыс</div>
+            <div class="case-results-label" data-ru="Уникальные посетители сайта" data-en="Unique website visitors">Уникальные посетители сайта</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 60px;">
+          <p class="case-section-label" data-ru="Награды" data-en="Awards">Награды</p>
+          <div class="awards-list stagger">
+            <span data-ru="Red Apple — Гран-при + 2× Золото + Серебро" data-en="Red Apple — Grand Prix + 2× Gold + Silver">Red Apple — Гран-при + 2× Золото + Серебро</span>
+            <span data-ru="ADCR — Золото" data-en="ADCR — Gold">ADCR — Золото</span>
+            <span data-ru="Mixx Russia — Золото + Серебро" data-en="Mixx Russia — Gold + Silver">Mixx Russia — Золото + Серебро</span>
+            <span data-ru="Jolbors — Бронза" data-en="Jolbors — Bronze">Jolbors — Бронза</span>
+            <span data-ru="White Square — Бронза" data-en="White Square — Bronze">White Square — Бронза</span>
+            <span data-ru="E+ Awards — Серебро + Бронза" data-en="E+ Awards — Silver + Bronze">E+ Awards — Серебро + Бронза</span>
+            <span data-ru="G8 — Серебро" data-en="G8 — Silver">G8 — Серебро</span>
+            <span data-ru="Silver Mercury — Спецприз" data-en="Silver Mercury — Special Prize">Silver Mercury — Спецприз</span>
+            <span data-ru="Профи индустрии — Золото" data-en="Industry Professionals — Gold">Профи индустрии — Золото</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="spacer--lg"></div>
+
+  </main>
+
+  <!-- ========== NEXT PROJECT ========== -->
+  <div class="case-next">
+    <a href="domru.html">
+      <p class="case-next-label" data-ru="Следующий проект" data-en="Next project">Следующий проект</p>
+      <div class="case-next-title">Дом.ру →</div>
+    </a>
+  </div>
+
+  <script>
+    // Cursor
+    const cursor = document.getElementById('cursor');
+    let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
+    document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+    function animateCursor() {
+      cursorX += (mouseX - cursorX) * 0.15;
+      cursorY += (mouseY - cursorY) * 0.15;
+      cursor.style.left = cursorX + 'px';
+      cursor.style.top = cursorY + 'px';
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('active'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('active'));
+    });
+
+    // Header scroll
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => { header.classList.toggle('scrolled', window.scrollY > 80); });
+
+    // Scroll reveal
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), 50);
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.reveal, .reveal-blur, .reveal-scale, .reveal-left, .reveal-right, .stagger').forEach(el => revealObserver.observe(el));
+
+    // Parallax on scroll
+    const parallaxEls = document.querySelectorAll('[data-parallax] img');
+    if (parallaxEls.length > 0) {
+      window.addEventListener('scroll', () => {
+        requestAnimationFrame(() => {
+          parallaxEls.forEach(img => {
+            const rect = img.parentElement.getBoundingClientRect();
+            const scrollPercent = rect.top / window.innerHeight;
+            const yOffset = scrollPercent * -40;
+            img.style.transform = `translateY(${yOffset}px)`;
+          });
+        });
+      }, { passive: true });
+    }
+
+    // Smooth entrance for hero
+    window.addEventListener('load', () => {
+      document.querySelectorAll('.case-hero .reveal, .case-hero .reveal-blur').forEach(el => {
+        setTimeout(() => el.classList.add('visible'), 200);
+      });
+    });
+
+    // Language toggle — read from URL params
+    function applyLang() {
+      const params = new URLSearchParams(window.location.search);
+      const lang = params.get('lang') || 'ru';
+      document.documentElement.lang = lang;
+      document.querySelectorAll('[data-ru]').forEach(el => {
+        el.textContent = el.getAttribute('data-' + lang) || el.textContent;
+      });
+      document.querySelectorAll('[data-ru-html]').forEach(el => {
+        const html = el.getAttribute('data-' + lang + '-html');
+        if (html) el.innerHTML = html;
+      });
+      // Update navigation links to pass lang param
+      document.querySelectorAll('a[href$=".html"], a[href*=".html?"]').forEach(a => {
+        const base = a.getAttribute('href').split('?')[0];
+        a.setAttribute('href', lang === 'en' ? base + '?lang=en' : base);
+      });
+    }
+    applyLang();
+  </script>
+
+</body>
+</html>
