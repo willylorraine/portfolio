@@ -4,6 +4,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Илья Лопухов — Креативный директор</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Ilia Lopukhov — Creative Director">
+  <meta property="og:description" content="AI, Strategy, Concepts & Branding. 13+ years of experience. Based in Bali, Indonesia.">
+  <meta property="og:url" content="https://lopukhov.cc">
+  <meta property="og:image" content="https://lopukhov.cc/images/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Ilia Lopukhov — Creative Director">
+  <meta name="twitter:description" content="AI, Strategy, Concepts & Branding. 13+ years of experience.">
+  <meta name="twitter:image" content="https://lopukhov.cc/images/og-image.jpg">
+
+  <!-- SEO -->
+  <meta name="description" content="Ilia Lopukhov — Creative Director. AI, Strategy, Concepts & Branding. 13+ years of experience. Based in Bali, Indonesia.">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
@@ -168,7 +190,6 @@
                   height 0.3s cubic-bezier(0.25, 1, 0.5, 1),
                   border-color 0.3s ease,
                   background 0.3s ease;
-      mix-blend-mode: difference;
       background: transparent;
     }
     .cursor.active {
@@ -663,16 +684,25 @@
     }
 
     .work-item-arrow {
-      font-size: 28px;
-      color: rgba(255,255,255,0.3);
-      transition: transform 0.6s cubic-bezier(0.1, 0.75, 0.5, 1), color 0.6s cubic-bezier(0.1, 0.75, 0.5, 1);
+      width: 28px;
+      height: 28px;
       flex-shrink: 0;
       margin-left: 20px;
       position: relative;
       z-index: 2;
+      transition: transform 0.6s cubic-bezier(0.1, 0.75, 0.5, 1), opacity 0.6s cubic-bezier(0.1, 0.75, 0.5, 1);
+      opacity: 0.3;
+    }
+    .work-item-arrow svg {
+      width: 100%;
+      height: 100%;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      color: var(--white);
     }
     .work-item:hover .work-item-arrow {
-      color: var(--white);
+      opacity: 1;
       transform: translate(4px, -4px);
     }
 
@@ -1581,7 +1611,7 @@
       IL
     </a>
     <div class="header-right">
-      <button class="lang-toggle" id="langToggle" style="font-size: 12px; font-weight: 600; color: var(--accent); letter-spacing: 1px; padding: 6px 14px; border: 1px solid var(--accent); border-radius: 100px; transition: all 0.3s ease; text-transform: uppercase;">EN</button>
+      <button class="lang-toggle" id="langToggle" style="font-size: 13px; font-weight: 500; color: var(--accent); letter-spacing: 0.3px; padding: 10px 24px; border: 1.5px solid var(--accent); border-radius: 100px; transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1); text-transform: uppercase;">EN</button>
       <a href="#contact" class="header-cta" data-ru="Написать мне" data-en="Connect With Me">Написать мне</a>
       <button class="menu-toggle" id="menuToggle" style="color: var(--accent);">
         <span data-ru="Меню" data-en="Menu">Меню</span>
@@ -1600,9 +1630,9 @@
     <section id="hero">
       <!-- Background video (compressed local, 380KB) -->
       <div class="hero-bg">
-        <video autoplay muted loop playsinline preload="auto">
-          <source src="hero-bg.webm" type="video/webm">
+        <video autoplay muted loop playsinline webkit-playsinline preload="auto" disableRemotePlayback>
           <source src="hero-bg.mp4" type="video/mp4">
+          <source src="hero-bg.webm" type="video/webm">
         </video>
       </div>
 
@@ -1647,25 +1677,25 @@
         <div class="work-item reveal" data-category="strategy">
           <a href="sibur.html" class="work-item-link" data-preview="cases/sibur/title-white-ru.png">
             <span class="work-item-title" data-ru="Vivilen" data-en="Vivilen">Vivilen</span>
-            <span class="work-item-arrow">↗</span>
+            <span class="work-item-arrow"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg></span>
           </a>
         </div>
         <div class="work-item reveal" data-category="social">
           <a href="mayakom.html" class="work-item-link" data-preview="cases/mayakom/image1.png">
             <span class="work-item-title" data-ru="Дом с маяком" data-en="Dom s Mayakom">Дом с маяком</span>
-            <span class="work-item-arrow">↗</span>
+            <span class="work-item-arrow"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg></span>
           </a>
         </div>
         <div class="work-item reveal" data-category="strategy">
           <a href="domru.html" class="work-item-link" data-preview="cases/domru/case-cover.png">
             <span class="work-item-title" data-ru="Дом.ру" data-en="Dom.ru">Дом.ру</span>
-            <span class="work-item-arrow">↗</span>
+            <span class="work-item-arrow"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg></span>
           </a>
         </div>
         <div class="work-item reveal" data-category="branding">
-          <a href="mira.html" class="work-item-link" data-preview="cases/mira/logo-1.jpg">
+          <a href="mira.html" class="work-item-link" data-preview="cases/mira/logo-1.png">
             <span class="work-item-title" data-ru="Mira" data-en="Mira">Mira</span>
-            <span class="work-item-arrow">↗</span>
+            <span class="work-item-arrow"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg></span>
           </a>
         </div>
       </div>
@@ -2348,6 +2378,22 @@
       });
     });
 
+    // iOS Safari video autoplay fix
+    (function() {
+      var v = document.querySelector('.hero-bg video');
+      if (v) {
+        var p = v.play();
+        if (p !== undefined) {
+          p.catch(function() {
+            document.addEventListener('touchstart', function once() {
+              v.play();
+              document.removeEventListener('touchstart', once);
+            });
+          });
+        }
+      }
+    })();
+
     // ========== ACCORDIONS ==========
     document.querySelectorAll('.experience-item-header').forEach(h => {
       h.addEventListener('click', () => {
@@ -2392,6 +2438,12 @@
     document.querySelectorAll('.work-item-link').forEach(link => {
       const src = link.dataset.preview;
 
+      // Preload image to avoid flicker
+      if (src) {
+        const img = new Image();
+        img.src = src;
+      }
+
       link.addEventListener('mouseenter', () => {
         if (src) {
           previewImg.src = src;
@@ -2403,6 +2455,7 @@
       link.addEventListener('mouseleave', () => {
         preview.classList.remove('visible');
         previewVisible = false;
+        previewImg.src = '';
       });
 
       link.addEventListener('mousemove', (e) => {
