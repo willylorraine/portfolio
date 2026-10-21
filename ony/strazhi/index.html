@@ -1,0 +1,743 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Стражи беспорядка · кейс</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: страница кейса в манере ony.ru. Белое поле, мелкий гротеск весом 400, заголовок «Идея. Проект», медиа в край, большие паузы между разделами. Изумруд и золото шоу живут только внутри медиа. В тёмной теме — инверсия в духе Magma. */
+@font-face { font-family: "Epos"; src: url("fonts/Epos-Normal.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Ozelot"; src: url("fonts/Ozelot-Heavy.woff2") format("woff2"); font-weight: 800; font-display: swap; }
+@font-face { font-family: "Graphik"; src: url("fonts/GraphikLCG-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Graphik"; src: url("fonts/GraphikLCG-Medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Strazhi Vyaz"; src: url("fonts/StrazhiVyaz.woff2") format("woff2"); font-display: swap; }
+:root {
+  --bg: #ffffff; --fg: #191919; --muted: rgba(25,25,25,.52); --faint: rgba(25,25,25,.3);
+  --surface: #f7f7f7; --tag: #ebebeb; --line: rgba(25,25,25,.1);
+  --emerald: #07180F; --emerald-2: #1C3022; --gold: #D8BD80; --parch: #E9E2D0; --parch-dim: #A9B0A0;
+  --f-text: "Graphik", "Helvetica Neue", Arial, sans-serif;
+  --f-show: "Epos", Georgia, serif;
+  --f-acc: "Ozelot", "Epos", Georgia, serif;
+  --gut: max(16px, env(safe-area-inset-left, 0px));
+  --gut-r: max(16px, env(safe-area-inset-right, 0px));
+  --t-hero: clamp(30px, 3.4vw, 56px);
+  --t-h2: clamp(26px, 2.5vw, 42px);
+  --t-wide: clamp(21px, 2.1vw, 34px);
+  --t-body: 17px; --t-small: 15px; --t-cap: 14px;
+  --ease: cubic-bezier(.4,0,.2,1); --ease-form: cubic-bezier(.22,1,.36,1);
+  --gap: 12px; --pause: clamp(112px, 14vw, 240px);
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #000000; --fg: #ffffff; --muted: rgba(255,255,255,.55); --faint: rgba(255,255,255,.32);
+  --surface: #111111; --tag: #1d1d1d; --line: rgba(255,255,255,.14); color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #000000; --fg: #ffffff; --muted: rgba(255,255,255,.55); --faint: rgba(255,255,255,.32);
+  --surface: #111111; --tag: #1d1d1d; --line: rgba(255,255,255,.14); color-scheme: dark; }
+
+* { box-sizing: border-box; }
+html { background: var(--bg); scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 400 var(--t-body)/1.5 var(--f-text); -webkit-font-smoothing: antialiased; }
+img, video { display: block; max-width: 100%; }
+a { color: inherit; }
+h1, h2, h3, p, figure, ol, ul { margin: 0; }
+h1, h2, h3 { font-weight: 400; text-wrap: balance; }
+p { text-wrap: pretty; }
+.wrap { padding-left: var(--gut); padding-right: var(--gut-r); max-width: 1800px; margin-inline: auto; }
+.muted { color: var(--muted); }
+.tnum { font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+
+/* шапка */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--bg); }
+.top .wrap { display: flex; align-items: center; gap: 24px; height: 56px; font-size: var(--t-small); }
+.top .who span { color: var(--muted); margin-left: 8px; }
+.top nav { display: flex; gap: 18px; overflow-x: auto; scrollbar-width: none; margin-left: auto; }
+.top nav a { color: var(--muted); text-decoration: none; white-space: nowrap; padding: 6px 0; transition: color .3s var(--ease); }
+.top nav a:hover, .top nav a:focus-visible, .top nav a[aria-current="true"] { color: var(--fg); }
+
+/* интро */
+.intro { padding-top: clamp(80px, 13vw, 220px); padding-bottom: 40px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 32px 48px; align-items: start; }
+.intro h1 { font-size: var(--t-hero); line-height: 1.08; letter-spacing: -.02em; max-width: 16em; }
+.meta { display: grid; justify-items: end; gap: 14px; padding-top: 6px; }
+.pills { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+.pill { font-size: var(--t-small); line-height: 1; padding: 9px 15px; border-radius: 100px; background: var(--tag); white-space: nowrap; }
+.date { font-size: var(--t-small); color: var(--muted); }
+
+/* медиа */
+.media { position: relative; background: var(--surface); overflow: hidden; }
+.media video, .media img { width: 100%; height: auto; }
+.hero video { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; max-height: 88vh; background: #000; }
+.snd { position: absolute; left: 16px; bottom: 16px; border: 0; border-radius: 100px; padding: 9px 15px; font: 400 14px/1 var(--f-text); background: rgba(255,255,255,.88); color: #191919; cursor: pointer; transition: background .3s var(--ease), color .3s var(--ease); }
+.snd[aria-pressed="true"] { background: #191919; color: #fff; }
+.snd:focus-visible, .chips button:focus-visible, .tabs button:focus-visible, .top nav a:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
+
+figure { min-width: 0; }
+figcaption { margin-top: 10px; font-size: var(--t-cap); line-height: 1.45; color: var(--muted); }
+figcaption b { font-weight: 400; color: var(--fg); }
+
+/* тексты в манере ony */
+.wide-text { font-size: var(--t-wide); line-height: 1.22; letter-spacing: -.01em; max-width: 34em; padding-block: clamp(64px, 9vw, 150px) 0; }
+.facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); margin-top: clamp(48px, 6vw, 96px); }
+.facts div, .numbers div { border-top: 1px solid var(--line); padding-top: 14px; min-width: 0; }
+.facts b, .numbers b { display: block; font-weight: 400; font-size: clamp(30px, 3vw, 48px); line-height: 1; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.facts span, .numbers span { display: block; margin-top: 10px; font-size: var(--t-cap); color: var(--muted); line-height: 1.4; max-width: 24ch; }
+.facts-cap { margin-top: clamp(48px, 6vw, 96px); font-size: var(--t-small); color: var(--muted); }
+.facts-cap + .facts { margin-top: 14px; }
+.numbers { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); }
+
+/* разделы */
+section.ch { padding-top: var(--pause); scroll-margin-top: 56px; }
+.ch-head { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px 48px; align-items: start; margin-bottom: clamp(32px, 4vw, 56px); }
+.ch-head h2 { font-size: var(--t-h2); line-height: 1.1; letter-spacing: -.015em; }
+.ch-head .lead { font-size: 19px; line-height: 1.5; max-width: 60ch; }
+.sub-h { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 24px; margin: clamp(56px, 6vw, 88px) 0 16px; border-top: 1px solid var(--line); padding-top: 14px; }
+.sub-h h3 { font-size: 19px; line-height: 1.3; }
+.sub-h span { color: var(--muted); font-size: var(--t-cap); }
+
+.grid { display: grid; gap: var(--gap); }
+.g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.g4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+/* шоу */
+.cast { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--gap); }
+.cast img { aspect-ratio: 1; object-fit: cover; width: 100%; }
+.cast figcaption b { display: block; }
+
+/* айдентика */
+.logos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
+.logos .media { background: #000; }
+.logos video { aspect-ratio: 16 / 9; object-fit: cover; }
+
+/* типографика и цвет шоу: «медиа» в цветах бренда */
+.specimen { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: rgba(216,189,128,.22); }
+.specimen > div { background: var(--emerald); color: var(--parch); padding: clamp(22px, 2.6vw, 40px); display: grid; gap: 16px; align-content: start; min-width: 0; }
+.specimen .big { font-size: clamp(48px, 5vw, 76px); line-height: 1; overflow-wrap: anywhere; }
+.specimen .row { font-size: 21px; line-height: 1.35; color: var(--parch-dim); overflow-wrap: anywhere; }
+.specimen .role { font-size: 14px; color: var(--parch-dim); }
+.specimen .role b { font-weight: 400; color: var(--gold); }
+.sp-epos .big, .sp-epos .row { font-family: var(--f-show); text-transform: uppercase; }
+.sp-oz .big, .sp-oz .row { font-family: var(--f-acc); font-weight: 800; }
+.sp-oz .big { color: var(--gold); }
+.sp-gr .big, .sp-gr .row { font-family: var(--f-text); }
+.swatches { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--gap); }
+.swatches i { display: block; aspect-ratio: 1.6; }
+.swatches span { display: block; margin-top: 10px; font-size: var(--t-cap); color: var(--muted); line-height: 1.4; font-variant-numeric: tabular-nums; }
+.swatches span b { font-weight: 400; color: var(--fg); display: block; }
+.type-split { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: var(--gap); margin-top: var(--gap); align-items: start; }
+.type-split .txt { margin-top: 20px; max-width: 62ch; color: var(--muted); font-size: var(--t-small); }
+.subdemo { position: relative; aspect-ratio: 9 / 16; background: url("media/av_Гюнтер.jpg") center/cover; overflow: hidden; }
+.subdemo .hk { position: absolute; top: 14%; left: 0; right: 0; text-align: center; }
+.subdemo .hk small { display: block; font: 400 15px/1.2 var(--f-show); text-transform: uppercase; letter-spacing: .06em; color: var(--parch); text-shadow: 0 2px 10px #000; }
+.subdemo .hk strong { display: block; font: 800 46px/1 var(--f-acc); margin-top: 6px; color: var(--gold); text-shadow: 0 2px 14px rgba(0,0,0,.6); }
+.subdemo .sb { position: absolute; bottom: 22%; left: 0; right: 0; text-align: center; font: 400 20px/1 var(--f-show); text-transform: uppercase; color: #EEC51C; text-shadow: 0 2px 12px rgba(0,0,0,.7); }
+
+/* шрифт */
+.vyaz-live { background: var(--emerald); padding: clamp(28px, 5vw, 72px) var(--gap); display: grid; gap: 24px; }
+.vyaz-text { font-family: "Strazhi Vyaz", var(--f-show); font-size: clamp(44px, 7.4vw, 112px); line-height: 1.7; color: var(--gold); outline: none; overflow-wrap: anywhere; min-height: 1.7em; padding-inline: 1.4em; text-align: center; }
+.vyaz-text:focus-visible { box-shadow: inset 0 0 0 1px rgba(216,189,128,.5); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.chips button { font: 400 14px/1 var(--f-text); color: var(--parch); background: rgba(233,226,208,.08); border: 0; border-radius: 100px; padding: 10px 15px; cursor: pointer; transition: background .3s var(--ease), color .3s var(--ease); }
+.chips button:hover { background: rgba(233,226,208,.16); }
+.chips button[aria-pressed="true"] { color: var(--emerald); background: var(--gold); }
+.chips button:focus-visible { outline-color: var(--gold); }
+.vyaz-note { text-align: center; color: var(--parch-dim); font-size: 14px; }
+
+.shots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
+.shots img { width: 100%; }
+.strip { list-style: none; padding: 0 0 12px; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(240px, 1fr); gap: var(--gap); overflow-x: auto; counter-reset: w; scrollbar-width: thin; scrollbar-color: var(--faint) transparent; }
+.strip img { width: 100%; aspect-ratio: 1; object-fit: contain; background: var(--surface); }
+.strip.wide img { aspect-ratio: 4 / 3; }
+.strip figcaption::before { counter-increment: w; content: counter(w) "  "; color: var(--fg); white-space: pre; }
+
+/* кубы */
+.dice-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); }
+.dice-grid .dz { overflow: hidden; background: #232227; aspect-ratio: 16 / 9; }
+.dice-grid video { width: 100%; height: 100%; object-fit: cover; transform: scale(1.22); }
+
+/* персонажи */
+.prompt-split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--gap) 48px; align-items: start; margin-bottom: clamp(48px, 5vw, 72px); }
+.prompt { margin: 14px 0 0; padding: 20px 22px; background: var(--surface); font: 400 13px/1.65 ui-monospace, "SF Mono", Menlo, monospace; color: var(--fg); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 360px; overflow: auto; }
+.prompt i { font-style: normal; background: var(--tag); }
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.tabs button { font: 400 var(--t-small)/1 var(--f-text); color: var(--fg); background: var(--surface); border: 0; border-radius: 100px; padding: 6px 15px 6px 6px; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: background .3s var(--ease); }
+.tabs button:hover { background: var(--tag); }
+.tabs button img { width: 28px; height: 28px; object-fit: cover; border-radius: 50%; }
+.tabs button[aria-selected="true"] { color: var(--bg); background: var(--fg); }
+.hero-card { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 2fr); gap: var(--gap); align-items: start; }
+.hero-card .wide { display: grid; gap: var(--gap); min-width: 0; }
+.hero-card img { width: 100%; }
+.hero-card .props { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
+.hero-card .props img { aspect-ratio: 1; object-fit: cover; }
+.hero-note { margin-top: 18px; max-width: 70ch; color: var(--muted); font-size: var(--t-small); }
+.hero-note b { font-weight: 400; color: var(--fg); }
+
+/* пайплайн */
+.split-v { position: relative; background: #000; }
+.split-v video { width: 100%; aspect-ratio: 32 / 9; object-fit: cover; }
+.split-v .tag { position: absolute; top: 14px; font-size: 13px; line-height: 1; padding: 8px 12px; border-radius: 100px; background: rgba(255,255,255,.88); color: #191919; }
+.split-v .tag.l { left: 14px; } .split-v .tag.r { left: calc(50% + 14px); }
+.ab-bar { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: baseline; margin-top: 10px; font-size: var(--t-cap); color: var(--muted); }
+.stills { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--gap); margin-top: var(--gap); }
+.stills img { aspect-ratio: 16 / 9; object-fit: cover; width: 100%; }
+.steps { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px var(--gap); }
+.steps li { border-top: 1px solid var(--line); padding-top: 14px; min-width: 0; display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 0 8px; }
+.steps .n { font-size: 19px; line-height: 1.3; font-variant-numeric: tabular-nums; }
+.steps h3 { font-size: 19px; line-height: 1.3; margin-bottom: 8px; }
+.steps p { grid-column: 2; font-size: var(--t-small); color: var(--muted); }
+.steps p b { font-weight: 400; color: var(--fg); }
+.fails img { aspect-ratio: 16 / 9; object-fit: cover; width: 100%; }
+
+/* карточки и рилсы */
+.stat { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px 48px; align-items: end; margin-bottom: clamp(32px, 4vw, 56px); }
+.stat h3 { font-size: 19px; margin-bottom: 6px; }
+.stat p { color: var(--muted); font-size: var(--t-small); }
+.cards { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--gap); }
+.cards video { aspect-ratio: 4 / 5; object-fit: cover; background: #000; width: 100%; }
+.reels { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--gap); }
+.reels video { aspect-ratio: 9 / 16; object-fit: cover; background: #000; width: 100%; cursor: pointer; }
+.reels figcaption b { display: block; margin-bottom: 2px; }
+
+/* стек и кредиты */
+.tools { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 var(--gap); }
+.tools div { border-top: 1px solid var(--line); padding: 14px 0 22px; min-width: 0; }
+.tools b { display: block; font-weight: 400; }
+.tools span { font-size: var(--t-cap); color: var(--muted); }
+.credits { display: grid; }
+.credits div { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px 48px; border-top: 1px solid var(--line); padding: 12px 0 14px; font-size: var(--t-body); }
+.credits div span:first-child { color: var(--muted); }
+footer { padding-block: var(--pause) 56px; }
+footer .wrap { display: grid; justify-items: center; gap: 14px; text-align: center; }
+footer .pair { font-size: 21px; }
+footer p { color: var(--muted); font-size: var(--t-cap); }
+
+@media (max-width: 1100px) {
+  .cards, .reels, .stills { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .cast { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 900px) {
+  .intro, .ch-head, .prompt-split, .stat, .type-split, .credits div { grid-template-columns: minmax(0, 1fr); }
+  .meta { justify-items: start; } .pills { justify-content: flex-start; }
+  .g4, .dice-grid, .facts, .numbers, .tools { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .g3, .specimen, .steps { grid-template-columns: minmax(0, 1fr); }
+  .swatches { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .hero-card { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .hero-card .wide { grid-column: 1 / -1; }
+  .top nav { display: none; }
+  .credits div { gap: 2px; }
+}
+@media (max-width: 560px) {
+  .g2, .logos, .shots { grid-template-columns: minmax(0, 1fr); }
+  .cards, .reels, .stills, .cast { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hero video { aspect-ratio: 4 / 5; }
+  .split-v .tag { font-size: 11px; padding: 6px 8px; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="who">Стражи беспорядка<span>кейс</span></div>
+    <nav aria-label="Разделы">
+      <a href="#show">Шоу</a><a href="#logo">Айдентика</a><a href="#type">Типографика</a><a href="#font">Шрифт</a><a href="#dice">Кубы</a><a href="#chars">Персонажи</a><a href="#pipeline">Пайплайн</a><a href="#motion">Карточки</a><a href="#reels">Рилсы</a><a href="#credits">Команда</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap intro">
+  <h1>Игра за столом, мультфильм на экране. Стражи беспорядка</h1>
+  <div class="meta">
+    <div class="pills"><span class="pill">Анимационный сериал</span><span class="pill">Айдентика</span><span class="pill">Шрифт</span><span class="pill">3D</span><span class="pill">AI-пайплайн</span></div>
+    <span class="date tnum">2024–2026</span>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="media hero">
+    <video poster="media/posters/battle_final.jpg" id="heroVid" src="media/battle_final.mp4" autoplay muted loop playsinline preload="auto" aria-label="Минута боя из четвёртой серии"></video>
+    <button class="snd" type="button" data-sound="heroVid" aria-pressed="false">Звук</button>
+  </div>
+
+  <p class="wide-text">Живая партия в D&amp;D, которая становится анимационным сериалом. Шесть актёров играют за столом, а их ходы и броски превращаются в мультфильм в стиле Arcane. Шоу, нейминг, знаки, шрифт, 3D и весь пайплайн придуманы одним человеком и собраны вместе с нейросетями.</p>
+
+  <p class="facts-cap">Только в одной серии, на примере третьей:</p>
+  <div class="facts" aria-label="Цифры третьей серии">
+    <div><b>77</b><span>анимационных сцен</span></div>
+    <div><b>74</b><span>липсинка NPC</span></div>
+    <div><b>391</b><span>секунда речи NPC</span></div>
+    <div><b>6</b><span>актёров за столом и мастер подземелий</span></div>
+  </div>
+</div>
+
+<!-- ШОУ -->
+<section class="ch" id="show">
+  <div class="wrap">
+    <div class="ch-head">
+      <h2>Каждая серия начинается с настоящей игры</h2>
+      <p class="lead">Игроки импровизируют, кубик решает, мастер ведёт сюжет. Самые сильные моменты партии дорисовываются анимацией прямо в монтаже. Зритель видит и живых людей, и то, что они себе представляют.</p>
+    </div>
+    <div class="cast">
+      <figure><img src="media/av_Патрик.jpg" alt="Патрик" loading="lazy"><figcaption><b>Патрик</b>бард, пират</figcaption></figure>
+      <figure><img src="media/av_Гаспар.jpg" alt="Гаспар" loading="lazy"><figcaption><b>Гаспар</b>плут, пират</figcaption></figure>
+      <figure><img src="media/av_Эллиана.jpg" alt="Эллиана" loading="lazy"><figcaption><b>Эллиана</b>пират</figcaption></figure>
+      <figure><img src="media/av_Гюнтер.jpg" alt="Гюнтер" loading="lazy"><figcaption><b>Гюнтер</b>колдун</figcaption></figure>
+      <figure><img src="media/av_Торадин.jpg" alt="Торадин" loading="lazy"><figcaption><b>Торадин</b>дварф</figcaption></figure>
+      <figure><img src="media/av_Сианара.jpg" alt="Сианара" loading="lazy"><figcaption><b>Сианара</b>героиня</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- АЙДЕНТИКА -->
+<section class="ch" id="logo">
+  <div class="wrap">
+    <div class="ch-head">
+      <h2>Два имени и два знака: канал и сериал</h2>
+      <p class="lead">«Как кости лягут» это бренд канала и шоу: контур кости в кольце. «Стражи беспорядка» называется сезон и анимационный сериал, его знак написан вязью одним куском. Оба знака живут в золоте на изумруде и умеют появляться из сцены: дракон выдыхает лёд, и кристаллы складываются в логотип.</p>
+    </div>
+    <div class="logos">
+      <figure><div class="media"><video poster="media/posters/logo_strazhi.jpg" src="media/logo_strazhi.mp4" muted loop playsinline preload="metadata" data-auto aria-label="Анимированный логотип «Стражи беспорядка»"></video></div><figcaption><b>«Стражи беспорядка».</b> Анимированный логотип сериала, золото с бликом.</figcaption></figure>
+      <figure><div class="media"><video poster="media/posters/logo_kkl_ice.jpg" src="media/logo_kkl_ice.mp4" muted loop playsinline preload="metadata" data-auto aria-label="Ледяная версия знака «Как кости лягут»"></video></div><figcaption><b>«Как кости лягут», ледяная версия.</b> Дракон дышит льдом в камеру, кристаллы собираются в знак. Seedance, 5 секунд.</figcaption></figure>
+      <figure><div class="media"><video poster="media/posters/logo_kkl_eye.jpg" src="media/logo_kkl_eye.mp4" muted loop playsinline preload="metadata" data-auto aria-label="Переход: глаз дракона в золотой знак"></video></div><figcaption><b>Глаз дракона → золотой знак.</b> Переход из третьей серии.</figcaption></figure>
+      <figure><div class="media"><video poster="media/posters/logo_strazhi_dragon.jpg" src="media/logo_strazhi_dragon.mp4" muted loop playsinline preload="metadata" data-auto aria-label="Финал интро четвёртой серии"></video></div><figcaption><b>Дракон, фиолетовая магия, «Стражи».</b> Финал интро четвёртой серии.</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ТИПОГРАФИКА И ЦВЕТ -->
+<section class="ch" id="type">
+  <div class="wrap">
+    <div class="ch-head">
+      <h2>Гравюра, золото и изумруд</h2>
+      <p class="lead">Образ взят у дорогой настольной игры: золотое тиснение на тёмно-зелёной рубашке карты, пергамент, состаренный металл. Шрифтов три, у каждого одна роль. В кадре не больше одного акцентного слова.</p>
+    </div>
+    <div class="specimen">
+      <div class="sp-epos"><div class="big">Epos</div><div class="row">Стражи беспорядка<br>АБВГДЕЖ 0123456789</div><div class="role"><b>Заголовки, титры, субтитры.</b> Всегда капсом.</div></div>
+      <div class="sp-oz"><div class="big">Ozelot</div><div class="row">когда кубик решил<br>Критическая двадцатка</div><div class="role"><b>Акцент.</b> Одно слово-хук на кадр.</div></div>
+      <div class="sp-gr"><div class="big">Graphik</div><div class="row">Сила 14 · Ловкость 18<br>Описания и мелкий текст</div><div class="role"><b>Карточки, статы, подписи.</b> Табличные цифры.</div></div>
+    </div>
+    <div class="type-split">
+      <div>
+        <div class="swatches">
+          <div><i style="background:#07180F"></i><span><b>Изумруд</b>#07180F</span></div>
+          <div><i style="background:#1C3022"></i><span><b>Рубашка</b>#1C3022</span></div>
+          <div><i style="background:url('brand/gold.jpg') center/cover #D8BD80"></i><span><b>Золото</b>#D8BD80</span></div>
+          <div><i style="background:#C7977E"></i><span><b>Пергамент</b>#C7977E</span></div>
+          <div><i style="background:#EEC51C"></i><span><b>Субтитры</b>#EEC51C</span></div>
+          <div><i style="background:#8E1B1B"></i><span><b>Провал, нат-1</b>#8E1B1B</span></div>
+        </div>
+        <p class="txt">Золото у нас не плоский цвет, а текстура металла с медленным бликом. Им заливаем не больше 10–15% кадра. Жёлтый только для субтитров. Цвета магии закреплены за героями: красная молния Гюнтера, бирюзовое лечение, фиолетовая боевая магия Патрика.</p>
+        <figure style="margin-top:28px"><div class="media"><img src="media/brand_board.jpg" alt="Доска бренда: логотип, d20, карточка, щит, иконка заклинания" loading="lazy"></div><figcaption><b>Доска бренда.</b> Лого, d20, карточка, щит, иконка заклинания.</figcaption></figure>
+      </div>
+      <figure>
+        <div class="subdemo" aria-label="Пример кадра рилса">
+          <div class="hk"><small>когда колдун в твоей пати</small><strong>дипломат</strong></div>
+          <div class="sb">Ты уверен?</div>
+        </div>
+        <figcaption><b>Регистры в рилсе.</b> Хук Epos и слово Ozelot золотом первые 2,6 секунды, дальше пословные субтитры.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ШРИФТ -->
+<section class="ch" id="font">
+  <div class="wrap">
+    <div class="ch-head">
+      <h2>Свой шрифт из логотипа. Стражи Вязь</h2>
+      <p class="lead">Кириллический акцидентный шрифт в почерке логотипа и надписей гримуара Гюнтера. Буквы вырезаны из настоящих знаков, недостающие сгенерированы нейросетью по их эталону и доведены в Glyphs. Базовое начертание прописное, как в логотипе. К и Р всегда длинные: хвост К уходит под следующую букву, Р стоит с ножкой. Шрифт сам ставит начальные и конечные формы с вензелями, а у Ж выбирает длинную или короткую ногу, чтобы не задеть соседа. Текст ниже можно править.</p>
+    </div>
+
+    <div class="vyaz-live">
+      <div class="vyaz-text" id="vyazText" contenteditable="true" spellcheck="false" data-default="ТАЙНА ДРАКОНА" aria-label="Живой образец шрифта, текст можно править">ТАЙНА ДРАКОНА</div>
+      <div class="chips" id="vyazChips" role="group" aria-label="OpenType-функции">
+        <button type="button" aria-pressed="false" data-fea="ss02">Пики, ss02</button>
+        <button type="button" aria-pressed="false" data-fea="ss04">Пики сверху и снизу, ss04</button>
+        <button type="button" aria-pressed="false" data-fea="swsh">Росчерки, swsh</button>
+        <button type="button" aria-pressed="false" data-fea="ss03">Без вензелей, ss03</button>
+        <button type="button" aria-pressed="false" data-fea="dlig" data-text="СТРАЖИ БЕСПОРЯДКА">Лигатуры и логотип, dlig</button>
+      </div>
+      <p class="vyaz-note">С dlig работают 8 лигатур: ТР, ТЕ, РА, НЕ, ПО, АН, ДО, ВА. А слова «Стражи беспорядка» собираются в знак целиком.</p>
+    </div>
+
+    <div class="numbers" style="margin-top:28px">
+      <div><b>314</b><span>глифов с вариантами и формами</span></div>
+      <div><b>≈7300</b><span>кернинговых пар</span></div>
+      <div><b>8</b><span>лигатур и логотип целиком</span></div>
+      <div><b>v0.9.2</b><span>OTF и WOFF2 для веба</span></div>
+    </div>
+
+    <div class="sub-h"><h3>В Glyphs</h3><span>Скриншоты рабочего файла</span></div>
+    <figure><div class="media"><img src="media/glyphs/g1_text.jpg" alt="Glyphs: проверочный набор «Стражи беспорядка»" loading="lazy"></div><figcaption><b>Проверочный набор.</b> Начальная «С» открыта на редактирование, справа живой набор с кернингом.</figcaption></figure>
+    <div class="shots" style="margin-top:var(--gap)">
+      <figure><div class="media"><img src="media/glyphs/g2_nodes.jpg" alt="Glyphs: контур буквы С с узлами" loading="lazy"></div><figcaption><b>Контур «С».</b> Узлы и направляющие вершин.</figcaption></figure>
+      <figure><div class="media"><img src="media/glyphs/g3_overview.jpg" alt="Glyphs: обзор всех глифов" loading="lazy"></div><figcaption><b>Все глифы.</b> Основные буквы, начальные и конечные формы, варианты с пиками.</figcaption></figure>
+    </div>
+
+    <div class="sub-h"><h3>Как собирали</h3><span>От логотипа до OTF</span></div>
+    <ol class="strip wide">
+      <li><figure><img src="media/font/01_logo.jpg" alt="Логотип «Стражи беспорядка»" loading="lazy"><figcaption>Логотип как первоисточник</figcaption></figure></li>
+      <li><figure><img src="media/font/02_cut.jpg" alt="Буквы, вырезанные из логотипа" loading="lazy"><figcaption>Буквы, вырезанные из знака</figcaption></figure></li>
+      <li><figure><img src="media/font/03_v02.jpg" alt="Образец версии 0.2" loading="lazy"><figcaption>Первый набор, v0.2</figcaption></figure></li>
+      <li><figure><img src="media/font/04_v07.jpg" alt="Буквы РЖКБЯ: было и стало" loading="lazy"><figcaption>Нарисованные → настоящие, v0.7</figcaption></figure></li>
+      <li><figure><img src="media/font/05_grimoire.jpg" alt="Сравнение с гримуаром" loading="lazy"><figcaption>Сверка с гримуаром Гюнтера</figcaption></figure></li>
+      <li><figure><img src="media/font/06_forms.jpg" alt="Формы А, Д, Р, К, Ж, С" loading="lazy"><figcaption>Обязательные формы</figcaption></figure></li>
+      <li><figure><img src="media/font/07_sheet.jpg" alt="Лист-образец версии 0.9" loading="lazy"><figcaption>Лист-образец v0.9</figcaption></figure></li>
+      <li><figure><img src="media/font/08_v092.jpg" alt="Проверка набора версии 0.9.2: алфавит и панграммы прописными" loading="lazy"><figcaption>v0.9.2: К и Р всегда с хвостом</figcaption></figure></li>
+    </ol>
+  </div>
+</section>
+
+<!-- КУБЫ -->
+<section class="ch" id="dice">
+  <div class="wrap">
+    <div class="ch-head">
+      <h2>Шесть героев, шесть камней</h2>
+      <p class="lead">У каждого героя свой d20: изумруд Патрика, рубин Гаспара, цитрин Эллианы, сапфир Торадина, хризолит Сианары и кунцит Гюнтера. Камень собран физически честно: свет преломляется и отражается внутри граней, цвет темнеет в толще. Цифры залиты золотом по чёрной эмали, на грани двадцатки стоит герб команды.</p>
+    </div>
+    <div class="dice-grid">
+      <figure><div class="dz"><video poster="media/posters/dice/Патрик.jpg" src="media/dice/Патрик.mp4" muted loop playsinline preload="metadata" data-auto aria-label="Куб Патрика"></video></div><figcaption><b>Патрик</b> · изумруд</figcaption></figure>
+      <figure><div class="dz"><video poster="media/posters/dice/Гаспар.jpg" src="media/dice/Гаспар.mp4" muted loop playsinline preload="metadata" data-auto aria-label="Куб Гаспара"></video></div><figcaption><b>Гаспар</b> · рубин</figcaption></figure>
+      <figure><div class="dz"><video poster="media/posters/dice/Эллиана.jpg" src="media/dice/Эллиана.mp4" muted loop playsinline preload="metadata" data-auto aria-label="Куб Эллианы"></video></div><figcaption><b>Эллиана</b> · цитрин</figcaption></figure>
+      <figure><div class="dz"><video poster="media/posters/dice/Торадин.jpg" src="media/dice/Торадин.mp4" muted loop playsinline preload="metadata" data-auto aria-label="Куб Торадина"></video></div><figcaption><b>Торадин</b> · сапфир</figcaption></figure>
+      <figure><div class="dz"><video poster="media/posters/dice/Сианара.jpg" src="media/dice/Сианара.mp4" muted loop playsinline preload="metadata" data-auto aria-label="Куб Сианары"></video></div><figcaption><b>Сианара</b> · хризолит</figcaption></figure>
+      <figure><div class="dz"><video poster="media/posters/dice/Гюнтер.jpg" src="media/dice/Гюнтер.mp4" muted loop playsinline preload="metadata" data-auto aria-label="Куб Гюнтера"></video></div><figcaption><b>Гюнтер</b> · кунцит</figcaption></figure>
+    </div>
+
+    <div class="sub-h"><h3>Работа в Blender</h3><span>Скриншоты рабочих файлов, без ретуши</span></div>
+    <div class="shots">
+      <figure><div class="media"><img src="media/blender/01_shading_emerald.jpg" alt="Blender: граф материала изумруда" loading="lazy"></div><figcaption><b>Материал изумруда.</b> Граф нод и рендер Cycles прямо во вьюпорте.</figcaption></figure>
+      <figure><div class="media"><img src="media/blender/02_layout_kunzite.jpg" alt="Blender: кубик Гюнтера через камеру сцены" loading="lazy"></div><figcaption><b>Кунцит Гюнтера.</b> Вид через камеру сцены.</figcaption></figure>
+      <figure><div class="media"><img src="media/blender/03_anim_ruby.jpg" alt="Blender: анимация броска" loading="lazy"></div><figcaption><b>Анимация броска.</b> Кубик катится и встаёт двадцаткой к камере.</figcaption></figure>
+      <figure><div class="media"><img src="media/blender/04_gerb_ggb.jpg" alt="Blender: 3D-герб гильдии героев" loading="lazy"></div><figcaption><b>Герб гильдии героев.</b> Звезда с мечом, отдельная 3D-модель для грани двадцатки.</figcaption></figure>
+    </div>
+
+    <div class="sub-h"><h3>Как искали камень</h3><span>От эталона до финального изумруда</span></div>
+    <ol class="strip">
+      <li><figure><img src="media/dice_wip/01_ref.jpg" alt="Эталон текстуры изумруда" loading="lazy"><figcaption>Эталон камня</figcaption></figure></li>
+      <li><figure><img src="media/dice_wip/02_density.jpg" alt="Проба плотности цвета" loading="lazy"><figcaption>Проба плотности цвета</figcaption></figure></li>
+      <li><figure><img src="media/dice_wip/03_v1.jpg" alt="Изумруд, версия 1" loading="lazy"><figcaption>Версия 1</figcaption></figure></li>
+      <li><figure><img src="media/dice_wip/04_v2.jpg" alt="Изумруд, версия 2" loading="lazy"><figcaption>Версия 2</figcaption></figure></li>
+      <li><figure><img src="media/dice_wip/05_v3.jpg" alt="Изумруд, версия 3 с гербом" loading="lazy"><figcaption>Версия 3, герб на грани</figcaption></figure></li>
+    </ol>
+
+    <div class="sub-h"><h3>Цифры и гербы</h3><span>Варианты, из которых выбирали</span></div>
+    <ol class="strip wide">
+      <li><figure><img src="media/dice_wip/07_gothic.jpg" alt="Варианты готических цифр" loading="lazy"><figcaption>Готические цифры</figcaption></figure></li>
+      <li><figure><img src="media/dice_wip/06_digits.jpg" alt="Сравнение цвета цифр" loading="lazy"><figcaption>Цвет цифр: золото в эмали</figcaption></figure></li>
+      <li><figure><img src="media/dice_wip/08_gerb_ref.jpg" alt="Гербы команд, канон" loading="lazy"><figcaption>Гербы команд, канон</figcaption></figure></li>
+      <li><figure><img src="media/dice_wip/09_gerb_metal.jpg" alt="Гербы в металле" loading="lazy"><figcaption>Гербы в металле</figcaption></figure></li>
+      <li><figure><img src="media/dice_wip/10_gerb_v6.jpg" alt="Звезда с мечом, версия 6" loading="lazy"><figcaption>Звезда с мечом, v6</figcaption></figure></li>
+      <li><figure><img src="media/dice_wip/11_gerb_3d.jpg" alt="Герб в 3D" loading="lazy"><figcaption>Герб в 3D</figcaption></figure></li>
+    </ol>
+
+    <figure style="margin-top:var(--pause)"><div class="media"><img src="media/dice/six_final.jpg" alt="Шесть кубов героев после броска" loading="lazy"></div><figcaption><b>Финальный кадр.</b> Шесть кубов после броска: сверху пираты, снизу герои.</figcaption></figure>
+  </div>
+</section>
+
+<!-- ПЕРСОНАЖИ -->
+<section class="ch" id="chars">
+  <div class="wrap">
+    <div class="ch-head">
+      <h2>Как рождается персонаж</h2>
+      <p class="lead">Лицо и костюм ищем в Midjourney: подробный промт и два стоп-кадра Fortiche в style reference. Выбранный вариант переносим в Seedream и доводим до канона: портрет, полный рост, разворот, лист эмоций, пропсы. Этот набор потом лежит в каждом промте, где появляется герой, поэтому он не «плывёт» между кадрами.</p>
+    </div>
+    <div class="prompt-split">
+      <div>
+        <h3 style="font-size:19px">Промт Midjourney: портрет Гюнтера</h3>
+        <pre class="prompt"><i>Arcane animated series style, Fortiche Production painterly 2D illustration</i>, visible brush strokes, hand-painted textures, dramatic cinematic lighting. Chest-level portrait of a tall lean charming warlock in his early thirties looking directly into the camera with a warm sly half-smile. Narrow oval face, prominent cheekbones, clean-shaven jaw, warm hazel-green eyes with an intelligent amused sparkle. Voluminous curly chestnut-copper hair of medium length. <i>A prominent copper handlebar mustache</i> with tips waxed and curled upward, the ONLY facial hair. <i>Bronze scissor pince-nez</i> perched on the nose bridge… a deep wine-red soft scarf… Dark teal painterly background, warm copper rim light on the curls.
+<i>--ar 3:4 --stylize 250 --sw 200</i> --no beard, goatee, stubble, hood, cloak, ordinary eyeglasses with ear temples</pre>
+      </div>
+      <div>
+        <div class="grid g3">
+          <figure><img src="media/g_mj_1.jpg" alt="Сырой вариант Midjourney, Гюнтер" loading="lazy"></figure>
+          <figure><img src="media/g_mj_2.jpg" alt="Сырой вариант Midjourney, Гюнтер" loading="lazy"></figure>
+          <figure><img src="media/g_mj_3.jpg" alt="Сырой вариант Midjourney, Гюнтер" loading="lazy"></figure>
+        </div>
+        <figcaption>Сырые генерации MJ: лицо, костюм и пенсне ищем по отдельности.</figcaption>
+      </div>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Герои">
+      <button type="button" role="tab" id="t-gunter" aria-controls="p-gunter" aria-selected="true"><img src="media/av_Гюнтер.jpg" alt="">Гюнтер</button>
+      <button type="button" role="tab" id="t-toradin" aria-controls="p-toradin" aria-selected="false"><img src="media/av_Торадин.jpg" alt="">Торадин</button>
+      <button type="button" role="tab" id="t-sianara" aria-controls="p-sianara" aria-selected="false"><img src="media/av_Сианара.jpg" alt="">Сианара</button>
+      <button type="button" role="tab" id="t-patrik" aria-controls="p-patrik" aria-selected="false"><img src="media/av_Патрик.jpg" alt="">Патрик</button>
+      <button type="button" role="tab" id="t-gaspar" aria-controls="p-gaspar" aria-selected="false"><img src="media/av_Гаспар.jpg" alt="">Гаспар</button>
+      <button type="button" role="tab" id="t-elliana" aria-controls="p-elliana" aria-selected="false"><img src="media/av_Эллиана.jpg" alt="">Эллиана</button>
+    </div>
+    <div class="hero-panel" role="tabpanel" id="p-gunter" aria-labelledby="t-gunter">
+      <div class="hero-card">
+        <figure><img src="media/ch/gunter_portrait.jpg" alt="Гюнтер: портрет" loading="lazy"><figcaption>Портрет, мастер лица</figcaption></figure>
+        <figure><img src="media/ch/gunter_full.jpg" alt="Гюнтер: полный рост" loading="lazy"><figcaption>Полный рост</figcaption></figure>
+        <div class="wide">
+          <figure><img src="media/ch/gunter_turn.jpg" alt="Гюнтер: разворот" loading="lazy"><figcaption>Разворот на четыре ракурса</figcaption></figure>
+          <figure><img src="media/ch/gunter_emo.jpg" alt="Гюнтер: эмоции" loading="lazy"><figcaption>Лист эмоций для липсинков и крупных планов</figcaption></figure>
+          <div class="props"><img src="media/ch/gunter_prop1.jpg" alt="Гюнтер: проп" loading="lazy"><img src="media/ch/gunter_prop2.jpg" alt="Гюнтер: проп" loading="lazy"></div>
+        </div>
+      </div>
+      <p class="hero-note"><b>Гюнтер, колдун.</b> Рыжие кудри и усы, пенсне-ножницы на шнурке, винный шарф. Его магия всегда выглядит как красная ветвящаяся молния.</p>
+    </div>
+    <div class="hero-panel" role="tabpanel" id="p-toradin" aria-labelledby="t-toradin" hidden>
+      <div class="hero-card">
+        <figure><img src="media/ch/toradin_portrait.jpg" alt="Торадин: портрет" loading="lazy"><figcaption>Портрет, мастер лица</figcaption></figure>
+        <figure><img src="media/ch/toradin_full.jpg" alt="Торадин: полный рост" loading="lazy"><figcaption>Полный рост</figcaption></figure>
+        <div class="wide">
+          <figure><img src="media/ch/toradin_turn.jpg" alt="Торадин: разворот" loading="lazy"><figcaption>Разворот на четыре ракурса</figcaption></figure>
+          <figure><img src="media/ch/toradin_emo.jpg" alt="Торадин: эмоции" loading="lazy"><figcaption>Лист эмоций для липсинков и крупных планов</figcaption></figure>
+          <div class="props"><img src="media/ch/toradin_prop1.jpg" alt="Торадин: проп" loading="lazy"><img src="media/ch/toradin_prop2.jpg" alt="Торадин: проп" loading="lazy"></div>
+        </div>
+      </div>
+      <p class="hero-note"><b>Торадин, дварф.</b> 161 см, рыжая борода, сине-стальная кольчуга, меч и щит с резными розами. На голову ниже спутников и вдвое шире.</p>
+    </div>
+    <div class="hero-panel" role="tabpanel" id="p-sianara" aria-labelledby="t-sianara" hidden>
+      <div class="hero-card">
+        <figure><img src="media/ch/sianara_portrait.jpg" alt="Сианара: портрет" loading="lazy"><figcaption>Портрет, мастер лица</figcaption></figure>
+        <figure><img src="media/ch/sianara_full.jpg" alt="Сианара: полный рост" loading="lazy"><figcaption>Полный рост</figcaption></figure>
+        <div class="wide">
+          <figure><img src="media/ch/sianara_turn.jpg" alt="Сианара: разворот" loading="lazy"><figcaption>Разворот на четыре ракурса</figcaption></figure>
+          <figure><img src="media/ch/sianara_emo.jpg" alt="Сианара: эмоции" loading="lazy"><figcaption>Лист эмоций для липсинков и крупных планов</figcaption></figure>
+          <div class="props"><img src="media/ch/sianara_prop1.jpg" alt="Сианара: проп" loading="lazy"><img src="media/ch/sianara_prop2.jpg" alt="Сианара: проп" loading="lazy"></div>
+        </div>
+      </div>
+      <p class="hero-note"><b>Сианара, героиня.</b> Посох и булава-бутон. Булаву держит одной рукой, и тогда посоха в руках нет.</p>
+    </div>
+    <div class="hero-panel" role="tabpanel" id="p-patrik" aria-labelledby="t-patrik" hidden>
+      <div class="hero-card">
+        <figure><img src="media/ch/patrik_portrait.jpg" alt="Патрик: портрет" loading="lazy"><figcaption>Портрет, мастер лица</figcaption></figure>
+        <figure><img src="media/ch/patrik_full.jpg" alt="Патрик: полный рост" loading="lazy"><figcaption>Полный рост</figcaption></figure>
+        <div class="wide">
+          <figure><img src="media/ch/patrik_turn.jpg" alt="Патрик: разворот" loading="lazy"><figcaption>Разворот на четыре ракурса</figcaption></figure>
+          <figure><img src="media/ch/patrik_emo.jpg" alt="Патрик: эмоции" loading="lazy"><figcaption>Лист эмоций для липсинков и крупных планов</figcaption></figure>
+          <div class="props"><img src="media/ch/patrik_prop1.jpg" alt="Патрик: проп" loading="lazy"><img src="media/ch/patrik_prop2.jpg" alt="Патрик: проп" loading="lazy"></div>
+        </div>
+      </div>
+      <p class="hero-note"><b>Патрик, бард, пират.</b> Котелок, трилистник на правой скуле, волчий наплечник на левом плече, лютня. На полголовы ниже других пиратов.</p>
+    </div>
+    <div class="hero-panel" role="tabpanel" id="p-gaspar" aria-labelledby="t-gaspar" hidden>
+      <div class="hero-card">
+        <figure><img src="media/ch/gaspar_portrait.jpg" alt="Гаспар: портрет" loading="lazy"><figcaption>Портрет, мастер лица</figcaption></figure>
+        <figure><img src="media/ch/gaspar_full.jpg" alt="Гаспар: полный рост" loading="lazy"><figcaption>Полный рост</figcaption></figure>
+        <div class="wide">
+          <figure><img src="media/ch/gaspar_turn.jpg" alt="Гаспар: разворот" loading="lazy"><figcaption>Разворот на четыре ракурса</figcaption></figure>
+          <figure><img src="media/ch/gaspar_emo.jpg" alt="Гаспар: эмоции" loading="lazy"><figcaption>Лист эмоций для липсинков и крупных планов</figcaption></figure>
+        </div>
+      </div>
+      <p class="hero-note"><b>Гаспар, плут, пират.</b> Платиновый ёжик под красной банданой, чёрная борода, септум, кожаное пальто с латунными пуговицами.</p>
+    </div>
+    <div class="hero-panel" role="tabpanel" id="p-elliana" aria-labelledby="t-elliana" hidden>
+      <div class="hero-card">
+        <figure><img src="media/ch/elliana_portrait.jpg" alt="Эллиана: портрет" loading="lazy"><figcaption>Портрет, мастер лица</figcaption></figure>
+        <figure><img src="media/ch/elliana_full.jpg" alt="Эллиана: полный рост" loading="lazy"><figcaption>Полный рост</figcaption></figure>
+        <div class="wide">
+          <figure><img src="media/ch/elliana_turn.jpg" alt="Эллиана: разворот" loading="lazy"><figcaption>Разворот на четыре ракурса</figcaption></figure>
+          <figure><img src="media/ch/elliana_emo.jpg" alt="Эллиана: эмоции" loading="lazy"><figcaption>Лист эмоций для липсинков и крупных планов</figcaption></figure>
+          <div class="props"><img src="media/ch/elliana_prop1.jpg" alt="Эллиана: проп" loading="lazy"><img src="media/ch/elliana_prop2.jpg" alt="Эллиана: проп" loading="lazy"></div>
+        </div>
+      </div>
+      <p class="hero-note"><b>Эллиана, пират.</b> Эльфийские уши, медные кудри, веснушки, жемчуг и изумруд, лук с колчаном. Её магия по канону выглядит как бирюзовый росчерк.</p>
+    </div>
+
+    <div class="sub-h"><h3>Каноничный рост: герои и пираты</h3><span>Записан в каждом промте</span></div>
+    <div class="grid g2">
+      <figure><div class="media"><img src="media/rost_heroes.jpg" alt="Гюнтер, Торадин, Сианара в росте" loading="lazy"></div><figcaption><b>Герои.</b> Гюнтер, Торадин, Сианара.</figcaption></figure>
+      <figure><div class="media"><img src="media/rost_pirates.jpg" alt="Гаспар, Патрик, Эллиана в росте" loading="lazy"></div><figcaption><b>Пираты.</b> Гаспар, Патрик, Эллиана. Патрик на полголовы ниже остальных.</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ПАЙПЛАЙН -->
+<section class="ch" id="pipeline">
+  <div class="wrap">
+    <div class="ch-head">
+      <h2>Сначала 3D, потом нейросеть. Пайплайн боя</h2>
+      <p class="lead">Пираты вырезают разведку стражи на берегу. За столом это череда бросков и споров, на экране 71 секунда анимации. Бой сначала ставится в Blender, как превиз в большом кино, и только потом отдаётся нейросети. Решения принимает режиссёр, модель рисует.</p>
+    </div>
+
+    <div class="split-v">
+      <video poster="media/posters/battle_split.jpg" id="splitVid" src="media/battle_split.mp4" muted loop playsinline preload="metadata" data-auto aria-label="Сплит: 3D-аниматик слева и готовая сцена справа"></video>
+      <span class="tag l">3D-аниматик, Blender</span><span class="tag r">Готовая сцена, Seedance 2.5</span>
+      <button class="snd" type="button" data-sound="splitVid" aria-pressed="false">Звук</button>
+    </div>
+    <div class="ab-bar"><span>Один таймкод: слева блокинг цветными фигурами, справа то, что из него получилось.</span></div>
+
+    <div class="stills">
+      <img src="media/stills/s_15.jpg" alt="Патрик и Эллиана в засаде" loading="lazy">
+      <img src="media/stills/s_20.jpg" alt="Лагерь стражи под клифом" loading="lazy">
+      <img src="media/stills/s_37.jpg" alt="Эллиана в клинче со стражником" loading="lazy">
+      <img src="media/stills/s_52.jpg" alt="Патрик, крупный план" loading="lazy">
+      <img src="media/stills/s_58.jpg" alt="Прыжок Гаспара" loading="lazy">
+      <img src="media/stills/s_70.jpg" alt="Патрик добивает стражника" loading="lazy">
+    </div>
+
+    <div class="sub-h"><h3>Шесть шагов</h3><span>От записи серии до готовой минуты</span></div>
+    <ol class="steps">
+      <li><span class="n">1</span><h3>Канон</h3><p>Транскрипт серии превращается в тритмент на <b>22 плана</b>. Перед каждой сценой сверяем с записью, кто прыгает, кто стреляет и в каком порядке.</p></li>
+      <li><span class="n">2</span><h3>Локация в Blender</h3><p>Берег с клифом в 7 метров, лагерь, уступ, камни. Свет как от солнца в девять утра.</p></li>
+      <li><span class="n">3</span><h3>Блокинг «огурцами»</h3><p>Семь цветных фигур, конус показывает взгляд. Фигуры <b>прилипают к рельефу</b> на каждом кадре, пересечения проверяет скрипт.</p></li>
+      <li><span class="n">4</span><h3>Плашки локаций</h3><p>Скрин из камеры плана → Seedream → <b>MJ Edit</b> со стилем Arcane → свет и герб на знамёнах.</p></li>
+      <li><span class="n">5</span><h3>Seedance 2.5</h3><p>Продолжение предыдущей сцены, аниматик, рефы персонажей и оружия, голос. <b>Одна генерация на сцену.</b></p></li>
+      <li><span class="n">6</span><h3>Проверка и монтаж</h3><p>Контакт-листы по 2 кадра в секунду, Whisper по репликам, финальный эффект «выключение телевизора».</p></li>
+    </ol>
+
+    <div class="sub-h"><h3>Что ломалось и как чинили</h3><span>Честно, с кадрами</span></div>
+    <div class="grid g4 fails">
+      <figure><img src="media/r_nsfw.jpg" alt="Отказ фильтра модели" loading="lazy"><figcaption><b>Фильтр ×9.</b> Голос стражника из записи модель считала опасным. Заменили на клон голоса мастера в ElevenLabs.</figcaption></figure>
+      <figure><img src="media/r_laser.jpg" alt="Стрела превратилась в лазер" loading="lazy"><figcaption><b>Стрела стала лазером.</b> Даём реф стрелы целиком и запрещаем «световые полосы».</figcaption></figure>
+      <figure><img src="media/r_C2_hood.jpg" alt="Капюшон с чужого персонажа" loading="lazy"><figcaption><b>Чужой капюшон.</b> Реф персонажа, которого нет в сцене, уехал на другого. Рефы только тех, кто в кадре.</figcaption></figure>
+      <figure><img src="media/r_E1_slab.jpg" alt="Скала осталась 3D-геометрией" loading="lazy"><figcaption><b>Скала осталась 3D.</b> Seedream не убирает геометрию, помогает MJ Edit и плашка в аниматике.</figcaption></figure>
+    </div>
+
+    <div class="numbers" style="margin-top:clamp(48px,5vw,80px)">
+      <div><b>71 с</b><span>анимации в финальном монтаже</span></div>
+      <div><b>6</b><span>сцен-генераций в финале</span></div>
+      <div><b>15 из 32</b><span>запусков Seedance вошли в монтаж</span></div>
+      <div><b>4 дня</b><span>от тритмента до готовой минуты</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- КАРТОЧКИ -->
+<section class="ch" id="motion">
+  <div class="wrap">
+    <div class="ch-head">
+      <h2>Карточки, которые оживают. Код вместо After Effects</h2>
+      <p class="lead">Карусели и motion-карточки для соцсетей собираются кодом в HyperFrames: каждый элемент собран как шаблон, а имя, число и дата приходят из данных. Одна правка в шаблоне обновляет всю серию. 25 кадров в секунду, безопасные зоны под интерфейсы площадок.</p>
+    </div>
+    <div class="stat">
+      <div>
+        <h3>Карусель от 13 октября</h3>
+        <p>«D&amp;D — это как психотерапия», 20 карточек в TikTok. Результат за первые сутки.</p>
+      </div>
+      <div class="numbers">
+        <div><b>15,5K</b><span>лайков</span></div>
+        <div><b>3852</b><span>репоста</span></div>
+        <div><b>2415</b><span>сохранений</span></div>
+        <div><b>142</b><span>комментария</span></div>
+      </div>
+    </div>
+    <div class="cards">
+      <figure><video poster="media/posters/card_B1-18_кинул_кубик.jpg" src="media/card_B1-18_кинул_кубик.mp4" muted loop playsinline preload="metadata" data-auto aria-label="Карточка «Кинул кубик»"></video><figcaption>Кинул кубик</figcaption></figure>
+      <figure><video poster="media/posters/card_B2-01_фаербол.jpg" src="media/card_B2-01_фаербол.mp4" muted loop playsinline preload="metadata" data-auto aria-label="Карточка «Фаербол»"></video><figcaption>Фаербол</figcaption></figure>
+      <figure><video poster="media/posters/card_B5-03_миниатюра_дракона.jpg" src="media/card_B5-03_миниатюра_дракона.mp4" muted loop playsinline preload="metadata" data-auto aria-label="Карточка «Миниатюра дракона»"></video><figcaption>Миниатюра дракона</figcaption></figure>
+      <figure><video poster="media/posters/card_B2-07_мимик.jpg" src="media/card_B2-07_мимик.mp4" muted loop playsinline preload="metadata" data-auto aria-label="Карточка «Мимик»"></video><figcaption>Мимик</figcaption></figure>
+      <figure><video poster="media/posters/card_B4-08_вдохновение.jpg" src="media/card_B4-08_вдохновение.mp4" muted loop playsinline preload="metadata" data-auto aria-label="Карточка «Вдохновение барда»"></video><figcaption>Вдохновение барда</figcaption></figure>
+      <figure><video poster="media/posters/card_B3-04_совомедведь.jpg" src="media/card_B3-04_совомедведь.mp4" muted loop playsinline preload="metadata" data-auto aria-label="Карточка «Совомедведь»"></video><figcaption>Совомедведь</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- РИЛСЫ -->
+<section class="ch" id="reels">
+  <div class="wrap">
+    <div class="ch-head">
+      <h2>Одна шутка, один рилс</h2>
+      <p class="lead">Из третьей серии берём истории, где шутка со стола совпадает с сильной анимацией. Хук держится первые 2,6 секунды, дальше одна шутка, кадры серии и субтитры по словам. Фразы не обрезаем: персонаж всегда договаривает. Нажмите на ролик, чтобы включить звук.</p>
+    </div>
+    <div class="reels">
+      <figure><video poster="media/posters/s3/s3_01_патрик_мёртвая_шкура.jpg" src="media/s3/s3_01_патрик_мёртвая_шкура.mp4" muted loop playsinline preload="metadata" data-auto data-click-sound aria-label="Рилс «Бард убивает словом»"></video><figcaption><b>Бард убивает словом</b>Патрик кричит на лютоволка, тот проваливает мудрость</figcaption></figure>
+      <figure><video poster="media/posters/s3/s3_02_эллиана_благородная.jpg" src="media/s3/s3_02_эллиана_благородная.mp4" muted loop playsinline preload="metadata" data-auto data-click-sound aria-label="Рилс «Благородная эльфийка»"></video><figcaption><b>Благородная эльфийка</b>Выстрел в глаз и «почему я так начала разговаривать?»</figcaption></figure>
+      <figure><video poster="media/posters/s3/s3_03_гюнтер_кубик_решил.jpg" src="media/s3/s3_03_гюнтер_кубик_решил.mp4" muted loop playsinline preload="metadata" data-auto data-click-sound aria-label="Рилс «Не хотел убивать»"></video><figcaption><b>Не хотел убивать</b>Ровно шесть урона и «Избавься от тела»</figcaption></figure>
+      <figure><video poster="media/posters/s3/s3_04_гюнтер_случайно.jpg" src="media/s3/s3_04_гюнтер_случайно.mp4" muted loop playsinline preload="metadata" data-auto data-click-sound aria-label="Рилс «Случайно»"></video><figcaption><b>Случайно</b>Труп за столом, перо в руку, свеча падает в архив</figcaption></figure>
+      <figure><video poster="media/posters/s3/s3_05_гюнтер_дружба.jpg" src="media/s3/s3_05_гюнтер_дружба.mp4" muted loop playsinline preload="metadata" data-auto data-click-sound aria-label="Рилс «Вино бесплатно»"></video><figcaption><b>Вино бесплатно</b>Заклинание «Дружба» на торговце и фермер в шоке</figcaption></figure>
+      <figure><video poster="media/posters/s3/s3_06_бабка_кара.jpg" src="media/s3/s3_06_бабка_кара.mp4" muted loop playsinline preload="metadata" data-auto data-click-sound aria-label="Рилс «Бабушка про кару»"></video><figcaption><b>Бабушка про кару</b>Беженка объясняет, за что деревне такая кара</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- СТЕК -->
+<section class="ch" id="tools">
+  <div class="wrap">
+    <div class="ch-head">
+      <h2>Чем собираем шоу</h2>
+      <p class="lead">Каждая модель отвечает за одну часть работы. Решения между ними принимает человек.</p>
+    </div>
+    <div class="tools">
+      <div><b>Midjourney V8.2</b><span>лица, костюмы, стиль Arcane</span></div>
+      <div><b>Seedream 5 Pro</b><span>канон персонажей, статики, плашки</span></div>
+      <div><b>Seedance 2.0 / 2.5</b><span>анимация сцен и переходов</span></div>
+      <div><b>Blender</b><span>аниматик, блокинг, 3D-кубы</span></div>
+      <div><b>HeyGen + ElevenLabs</b><span>липсинки и голоса NPC</span></div>
+      <div><b>Suno</b><span>музыка боя и песни бардов</span></div>
+      <div><b>HyperFrames, Remotion</b><span>карточки, рилсы, интро кодом</span></div>
+      <div><b>Glyphs 4</b><span>шрифт «Стражи Вязь»</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- КОМАНДА -->
+<section class="ch" id="credits">
+  <div class="wrap">
+    <div class="ch-head"><h2>Над проектом работали</h2><p class="lead muted">Креативный директор, шоураннер и AI-директор проекта: Илья Лопухов. Ниже то, что он придумал и собрал вместе с нейросетями.</p></div>
+    <div class="credits">
+      <div><span>Концепция шоу, шоураннер</span><span>Илья Лопухов</span></div>
+      <div><span>Нейминг: «Как кости лягут», «Стражи беспорядка»</span><span>Илья Лопухов</span></div>
+      <div><span>Логотипы канала и сезона</span><span>Илья Лопухов</span></div>
+      <div><span>Шрифт «Стражи Вязь»</span><span>Илья Лопухов</span></div>
+      <div><span>3D-кубы и анимация броска</span><span>Илья Лопухов</span></div>
+      <div><span>Персонажи: Midjourney → Seedream → Seedance</span><span>Илья Лопухов</span></div>
+      <div><span>Пайплайн Blender → Seedream → Seedance</span><span>Илья Лопухов</span></div>
+      <div><span>За столом</span><span>Шесть актёров и мастер подземелий</span></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="pair">Меньше генераций. Больше решений.</p>
+    <p>«Как кости лягут» · «Стражи беспорядка» · 2024–2026</p>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    const v = e.target;
+    if (e.isIntersecting && !reduce) { v.play().catch(() => {}); } else { v.pause(); }
+  }), { threshold: 0.35 });
+  document.querySelectorAll('video[data-auto]').forEach(v => io.observe(v));
+
+  const muteOthers = v => document.querySelectorAll('video').forEach(o => { if (o !== v) o.muted = true; });
+  const syncBtns = () => document.querySelectorAll('[data-sound]').forEach(b => {
+    const v = document.getElementById(b.dataset.sound);
+    b.setAttribute('aria-pressed', String(!v.muted)); b.textContent = v.muted ? 'Звук' : 'Без звука';
+  });
+  document.querySelectorAll('video[data-click-sound]').forEach(v => v.addEventListener('click', () => {
+    muteOthers(v); v.muted = !v.muted; if (v.paused) v.play().catch(() => {}); syncBtns();
+  }));
+  document.querySelectorAll('[data-sound]').forEach(b => b.addEventListener('click', () => {
+    const v = document.getElementById(b.dataset.sound);
+    muteOthers(v); v.muted = !v.muted; v.play().catch(() => {}); syncBtns();
+  }));
+
+  const tabs = [...document.querySelectorAll('.tabs [role=tab]')];
+  tabs.forEach(t => t.addEventListener('click', () => {
+    tabs.forEach(o => { const on = o === t; o.setAttribute('aria-selected', on); document.getElementById(o.getAttribute('aria-controls')).hidden = !on; });
+  }));
+  if (reduce) document.getElementById('heroVid').pause();
+
+  // живой образец «Стражи Вязь»: переключение OpenType-фич
+  const vt = document.getElementById('vyazText');
+  const chips = [...document.querySelectorAll('#vyazChips button')];
+  const applyFea = () => {
+    const on = chips.filter(c => c.getAttribute('aria-pressed') === 'true').map(c => `"${c.dataset.fea}" 1`);
+    vt.style.fontFeatureSettings = on.length ? on.join(', ') : 'normal';
+  };
+  chips.forEach(c => c.addEventListener('click', () => {
+    c.setAttribute('aria-pressed', c.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+    if (c.dataset.text) vt.textContent = c.getAttribute('aria-pressed') === 'true' ? c.dataset.text : vt.dataset.default;
+    applyFea();
+  }));
+
+  // подсветка текущего раздела в шапке
+  const links = new Map([...document.querySelectorAll('.top nav a')].map(a => [a.getAttribute('href').slice(1), a]));
+  const so = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { links.forEach(a => a.removeAttribute('aria-current')); const a = links.get(e.target.id); if (a) a.setAttribute('aria-current', 'true'); }
+  }), { rootMargin: '-40% 0px -55% 0px' });
+  document.querySelectorAll('section.ch').forEach(s => so.observe(s));
+})();
+</script>
+</body>
+</html>
