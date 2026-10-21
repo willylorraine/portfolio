@@ -417,6 +417,27 @@ button{font:inherit;color:inherit}
 .mleft .chain figure .media{aspect-ratio:4/3}
 .mleft .chain figcaption{font-size:14px;line-height:18px}
 @media (max-width: 820px){.mleft .chain{grid-template-columns:1fr 1fr}.pfacts div{grid-template-columns:96px 1fr}}
+
+/* слайд «Как сделано» */
+.flow{display:flex;flex-direction:column;height:100%}
+.flow .h2{margin-bottom:22px}
+.flabel{font-size:18px;line-height:24px;max-width:1500px;margin:0 0 12px}
+.flabel b{font-weight:500}
+.frow{display:flex;gap:12px;align-items:flex-start;margin-bottom:22px}
+.frow figure{margin:0;display:flex;flex-direction:column;gap:8px;flex:none}
+.frow .media{height:292px;aspect-ratio:var(--ar);width:auto;border-radius:8px}
+.frow .media img,.frow .media video{width:100%;height:100%;object-fit:cover}
+.frow figcaption{font-size:14px;line-height:18px;color:var(--muted);max-width:420px}
+.frow figcaption .mono{color:var(--fg);margin-right:4px}
+.fside{flex:1;display:flex;flex-direction:column;justify-content:space-between;height:292px;padding-left:20px;min-width:0}
+.fside .sfacts{grid-template-columns:1fr}
+.fside .sfacts div{padding-top:10px}
+@media (max-width: 820px){
+  .flow{height:auto}.frow{flex-wrap:wrap}
+  .frow figure{width:calc(50% - 6px)}
+  .frow .media{height:auto;width:100%}
+  .fside{height:auto;padding-left:0;width:100%;gap:16px}
+}
 </style>
 
 <div class="viewport" id="vp">
@@ -632,39 +653,33 @@ button{font:inherit;color:inherit}
  </div>
 </section>
 
-<!-- 10 Шоу: пайплайн контента -->
-<section class="slide" data-label="Пайплайн шоу">
- <div class="machine">
-  <div class="mleft">
-   <div>
-    <h2 class="h2 t">Как устроен пайплайн шоу</h2>
-    <p class="body" style="margin-top:16px">Всё веду в Claude Code: генерации через Higgsfield, Blender и браузер. Повторяющиеся задачи упаковал в свои скиллы и после каждой серии дописываю в них уроки.</p>
-   </div>
-   <dl class="facts pfacts">
-    <div class="draw" style="--d:0"><dt>Картинки</dt><dd>Стиль и основу делаю в Midjourney: лица, костюмы, атмосфера Arcane. Дорабатываю в Seedream 5 Pro: канон героя (полный рост, разворот, эмоции), правки и плашки локаций. Плашки из камеры аниматика собирает мой скилл blender-seedream-mj-seedream</dd></div>
-    <div class="draw" style="--d:1"><dt>Анимация</dt><dd>Мой скилл dnd-episode-breakdown размечает запись серии: кто говорит, где анимация, где липсинк. Сцену ставлю в Blender, оживляю в Seedance 2.5, липсинки NPC делаю в HeyGen</dd></div>
-    <div class="draw" style="--d:2"><dt>Рилсы</dt><dd>Берём шутку со стола и сильную анимацию из серии. Сценарий проверяю скиллами viral-reel-generator и story-check, фэнтези-вставки генерирую в Seedance 2.5. Собираю в Remotion: склейки по паузам речи, субтитры по словам шрифтами шоу. Музыка из Suno под ритм речи, звуки из ElevenLabs, мастер на −14 LUFS</dd></div>
-    <div class="draw" style="--d:3"><dt>Карточки</dt><dd>Карусели и motion-оверлеи собираю кодом в HyperFrames: шаблон один, имена и цифры подставляются из данных</dd></div>
-   </dl>
-   <div class="chain">
-    <figure><div class="media"><img src="assets/show/gunter_mj.jpg" alt="Сырая генерация Midjourney: костюм Гюнтера" loading="lazy"></div><figcaption><span class="mono">1</span> Midjourney: стиль и основа</figcaption></figure>
-    <figure><div class="media"><img src="assets/show/gunter_portrait.jpg" alt="Канонический портрет Гюнтера" loading="lazy"></div><figcaption><span class="mono">2</span> Seedream: канон лица</figcaption></figure>
-    <figure><div class="media"><img src="assets/show/gunter_turn.jpg" alt="Разворот Гюнтера на четыре ракурса" loading="lazy"></div><figcaption><span class="mono">3</span> Seedream: разворот</figcaption></figure>
-    <figure><div class="media"><img src="assets/show/gunter_emo.jpg" alt="Лист эмоций Гюнтера" loading="lazy"></div><figcaption><span class="mono">4</span> Seedream: эмоции для липсинков</figcaption></figure>
-   </div>
+<!-- 10 Шоу: как сделано -->
+<section class="slide" data-label="Как сделано">
+ <div class="flow">
+  <h2 class="h2 t">Как сделано: от листа персонажа до рилса</h2>
+
+  <p class="flabel"><b>Персонаж.</b> У каждого героя свой лист: портрет, полный рост, разворот, эмоции, пропсы. Стиль и основу делаю в Midjourney, дорабатываю в Seedream 5 Pro.</p>
+  <div class="frow">
+   <figure style="--ar:3/4"><div class="media"><img src="assets/show/gunter_mj.jpg" alt="Сырая генерация Midjourney, Гюнтер" loading="lazy" style="object-position:center top"></div><figcaption><span class="mono">1</span> Midjourney: лица, костюм, атмосфера Arcane</figcaption></figure>
+   <figure style="--ar:3/4"><div class="media"><img src="assets/show/gunter_portrait.jpg" alt="Портрет Гюнтера после доработки в Seedream" loading="lazy"></div><figcaption><span class="mono">2</span> Seedream: правки артефактов, чистка</figcaption></figure>
+   <figure style="--ar:16/9"><div class="media"><img src="assets/show/gunter_turn.jpg" alt="Лист персонажа: разворот Гюнтера" loading="lazy"></div><figcaption><span class="mono">3</span> Лист персонажа: разворот на четыре ракурса</figcaption></figure>
+   <figure style="--ar:16/9"><div class="media"><img src="assets/show/gunter_emo.jpg" alt="Лист персонажа: эмоции Гюнтера" loading="lazy"></div><figcaption><span class="mono">4</span> Лист персонажа: эмоции для липсинков</figcaption></figure>
   </div>
-  <div class="mright">
-   <div class="outs">
-    <figure><div class="media"><video data-src="assets/show/reel_gunter.mp4" poster="assets/show/reel_gunter.jpg" muted loop playsinline preload="none" aria-label="Рилс «Не хотел убивать»"></video><button class="snd" aria-pressed="false">Звук</button></div><figcaption>Рилс из серии</figcaption></figure>
-    <figure><div class="media"><video data-src="assets/show/reel_elliana.mp4" poster="assets/show/reel_elliana.jpg" muted loop playsinline preload="none" aria-label="Рилс «Благородная эльфийка»"></video><button class="snd" aria-pressed="false">Звук</button></div><figcaption>Ещё рилс, тот же канон</figcaption></figure>
-    <figure><div class="media"><video data-src="assets/show/card_fireball.mp4" poster="assets/show/card_fireball.jpg" muted loop playsinline preload="none" aria-label="Motion-карточка «Фаербол»"></video></div><figcaption>Карточка, собранная кодом</figcaption></figure>
+
+  <p class="flabel"><b>Анимация и контент.</b> Анимацию делаю своими скиллами: разметка серии, плашки локаций, старт-кадры, затем Seedance 2.5. Из той же серии собираю рилсы в Remotion и карточки в HyperFrames.</p>
+  <div class="frow">
+   <figure style="--ar:16/9"><div class="media"><video data-src="assets/show/battle_final.mp4" poster="assets/show/battle_final.jpg" muted loop playsinline preload="none" aria-label="Сцена из четвёртой серии, Seedance 2.5"></video><button class="snd" aria-pressed="false">Звук</button></div><figcaption><span class="mono">5</span> Seedance 2.5: сцена из серии</figcaption></figure>
+   <figure style="--ar:9/16"><div class="media"><video data-src="assets/show/reel_gunter.mp4" poster="assets/show/reel_gunter.jpg" muted loop playsinline preload="none" aria-label="Рилс «Не хотел убивать»"></video><button class="snd" aria-pressed="false">Звук</button></div><figcaption><span class="mono">6</span> Рилс</figcaption></figure>
+   <figure style="--ar:9/16"><div class="media"><video data-src="assets/show/reel_elliana.mp4" poster="assets/show/reel_elliana.jpg" muted loop playsinline preload="none" aria-label="Рилс «Благородная эльфийка»"></video><button class="snd" aria-pressed="false">Звук</button></div><figcaption><span class="mono">7</span> Рилс</figcaption></figure>
+   <figure style="--ar:4/5"><div class="media"><video data-src="assets/show/card_fireball.mp4" poster="assets/show/card_fireball.jpg" muted loop playsinline preload="none" aria-label="Карточка «Фаербол», HyperFrames"></video></div><figcaption><span class="mono">8</span> Карточка</figcaption></figure>
+   <div class="fside">
+    <div class="sfacts">
+     <div><b class="mono">15,5K</b><span>лайков у карусели за сутки</span></div>
+     <div><b class="mono">3852</b><span>репоста</span></div>
+     <div><b class="mono">2415</b><span>сохранений</span></div>
+    </div>
+    <a class="golink" href="https://lopukhov.cc/ony/strazhi/" target="_blank" rel="noopener">Полный кейс →</a>
    </div>
-   <div class="sfacts">
-    <div class="draw" style="--d:0"><b class="mono">15,5K</b><span>лайков у карусели за сутки</span></div>
-    <div class="draw" style="--d:1"><b class="mono">3852</b><span>репоста</span></div>
-    <div class="draw" style="--d:2"><b class="mono">2415</b><span>сохранений</span></div>
-   </div>
-   <a class="golink" href="https://lopukhov.cc/ony/strazhi/" target="_blank" rel="noopener">Полный кейс →</a>
   </div>
  </div>
 </section>
